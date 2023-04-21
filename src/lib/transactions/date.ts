@@ -16,3 +16,12 @@ export function isDate (a: string): boolean {
   )
   return isFinite(+date);
 }
+
+export function splitDate(a: Date): string {
+  if (a == null || !isFinite(+a))
+    return '';
+  let s: string = a.getDay().toString() + '.';
+  s += a.getMonth().toString() + '.';
+  s += a.getFullYear().toString();
+  return s;
+}

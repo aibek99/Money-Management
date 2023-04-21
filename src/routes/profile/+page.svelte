@@ -1,10 +1,10 @@
 <script lang="ts">
-	import Balance from "../../lib/transactions/Balance.svelte";
+	import Balance from "../../lib/profile/Balance.svelte";
 
-	let name: string = '';
-	let surname: string = '';
-	let email: string = '';
-	let username: string = '';
+	let name = '';
+	let surname = '';
+	let email = '';
+	let username = '';
 </script>
 
 <svelte:head>
