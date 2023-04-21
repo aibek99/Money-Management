@@ -82,6 +82,7 @@
 			<div class="has-text-danger">{form.errorMessage}</div>
 		{/if}
         <button on:click={validatePassword} type="submit" formaction="?/register">Register</button>
+		<a href="/login" class="ifthecase">If you have account, sign in into your account!</a>
         {#if !passwordsMatch}
             <p style="color: red;">Passwords don't match</p>
         {/if}
