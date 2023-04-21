@@ -67,23 +67,4 @@
 		font-size: 0.875rem;
 		margin-top: 0.5rem;
 	}
-	.container {
-		padding: 1rem;
-	}
 </style>
-
-<div class="container">
-	<h1>Login</h1>
-	<form method="post">
-		<input type="text" placeholder="Email" name="email" required />
-		<input type="password" placeholder="Password" name="password" required />
-		{#if form?.errorMessage}
-			<div class="has-text-danger">{form.errorMessage}</div>
-		{/if}
-		<button class="is-primary" type="submit" formaction="?/login">Login</button>
-		<a href="/signup" class="ifthecase">If you don't have account, register new account!</a>
-	</form>
-</div>
-
-
-<!-- <button type="submit" formaction="?/register">Register</button> -->
