@@ -12,21 +12,21 @@
 
   const dispatch = createEventDispatcher();
 
-  function typeClick(type) {
-    if (filter.type != null)
-      filter.type = filter.type === type ? null : type;
+  function typeClick(transaction_type) {
+    if (filter.transaction_type != null)
+      filter.transaction_type = filter.transaction_type === transaction_type ? null : transaction_type;
     else
-      filter.type = type;
+      filter.transaction_type = transaction_type;
     dispatch("change", filter);
   }
 
   function tagClick(tag) {
-    const tags = [...filter.tags];
+    const tags = [...filter.tag.name];
     if (tags.includes(tag))
       tags.splice(tags.indexOf(tag), 1);
     else
       tags.push(tag);
-    filter.tags = tags;
+    filter.tag.name = tags;
     dispatch("change", filter);
   }
 

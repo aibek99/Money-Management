@@ -1,9 +1,10 @@
 <script lang="ts">
   import { transactions } from "../../lib/transactions/getTransactions.ts";
-  import TableHeader from "../../lib/History/TableHeader.svelte";
+  import TableHeader from "../../lib/history/TableHeader.svelte";
   import FilterDropdown from "../../lib/history/FilterDropdown.svelte";
   import type { Filter, Transaction } from "../../lib/types";
   import { toDate } from "../../lib/transactions/date";
+
 
   let show_transactions: Transaction[] = transactions;
 
@@ -21,16 +22,16 @@
   function sorting() {
     show_transactions = show_transactions.sort((a, b) => {
       let cmp = 0;
-      if (sort.column === "Name") cmp = a.name.localeCompare(b.name);
-      else if (sort.column === "Type") cmp = a.type.localeCompare(b.type);
+      if (sort.column === "Title") cmp = a.title.localeCompare(b.title);
+      else if (sort.column === "Type") cmp = a.transaction_type.localeCompare(b.transaction_type);
       else if (sort.column === "Amount") cmp = a.amount - b.amount;
-      else if (sort.column === "Date") cmp = toDate(a.date) - toDate(b.date);
+      else if (sort.column === "Date") cmp = toDate(a.datetime) - toDate(b.datetime);
       else if (sort.column === "Description") cmp = a.description.localeCompare(b.description);
       return sort.asc ? cmp : -cmp;
     });
   }
 
-  let filter: Filter = { type: null, amount: { from: null, to: null }, tags: [], date: { from: null, to: null } };
+  let filter: Filter = { transaction_type: null, amount: { from: null, to: null }, tag: [], datetime: { from: null, to: null } };
   let filterOpen = false;
 
   function toggleFilter() {
@@ -39,27 +40,27 @@
 
   function filterBy(f: Filter) {
     show_transactions = transactions;
-    if (f.type != null)
-      show_transactions = show_transactions.filter(a => a.type === f.type);
+    if (f.transaction_type != null)
+      show_transactions = show_transactions.filter(a => a.transaction_type === f.transaction_type);
     if (f.amount.from != null && f.amount.to != null)
       show_transactions = show_transactions.filter(a => a.amount >= f.amount.from && a.amount <= f.amount.to);
     else if (f.amount.from != null)
       show_transactions = show_transactions.filter(a => a.amount >= f.amount.from);
     else if (f.amount.to != null)
       show_transactions = show_transactions.filter(a => a.amount <= f.amount.to);
-    if (f.tags.length)
+    if (f.tag.name.length)
       show_transactions = show_transactions.filter(a => {
-        for (const tag of f.tags)
-          if (!a.tags.includes(tag))
+        for (const tag of f.tag)
+          if (!a.tag.includes(tag.name))
             return false;
         return true;
       });
-    if (f.date.from != null && f.date.to != null)
-      show_transactions = show_transactions.filter(a => toDate(a.date) >= toDate(<string>f.date.from) && toDate(a.date) <= toDate(<string>f.date.to));
-    if (f.date.from != null)
-      show_transactions = show_transactions.filter(a => toDate(a.date) >= toDate(<string>f.date.from));
-    if (f.date.to != null)
-      show_transactions = show_transactions.filter(a => toDate(a.date) <= toDate(<string>f.date.to));
+    if (f.datetime.from != null && f.datetime.to != null)
+      show_transactions = show_transactions.filter(a => toDate(a.datetime) >= toDate(<string>f.datetime.from) && toDate(a.datetime) <= toDate(<string>f.date.to));
+    if (f.datetime.from != null)
+      show_transactions = show_transactions.filter(a => toDate(a.datetime) >= toDate(<string>f.datetime.from));
+    if (f.datetime.to != null)
+      show_transactions = show_transactions.filter(a => toDate(a.datetime) <= toDate(<string>f.datetime.to));
     sorting();
   }
 </script>
@@ -92,12 +93,12 @@
     <tbody>
     {#each show_transactions as transaction}
       <tr>
-        <td>{transaction.name}</td>
-        <td class={transaction.type}>{transaction.type}</td>
+        <td>{transaction.title}</td>
+        <td class={transaction.transaction_type}>{transaction.transaction_type}</td>
         <td>{transaction.amount}</td>
-        <td>{transaction.date}</td>
+        <td>{transaction.datetime}</td>
         <td>
-          {#each transaction.tags as tag}<span>{tag}</span>{/each}
+          {#each transaction.tag as tag}<span>{tag.name}</span>{/each}
         </td>
         <td class="description">{transaction.description}</td>
       </tr>

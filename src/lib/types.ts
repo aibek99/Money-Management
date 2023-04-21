@@ -1,23 +1,29 @@
+export interface Tag {
+  id: number;
+  name: string;
+}
+
 export interface Filter {
-  type: "income" | "expense" | null,
+  transaction_type: "income" | "expense" | null,
   amount: {
     from: null | number,
     to: null | number
   },
-  tags: string[],
-  date: {
+  tag: Tag[],
+  datetime: {
     from: null | string,
     to: null | string
   }
 }
 
 export interface Transaction {
-  name: string;
-  type: 'income' | 'expense';
+  id: number;
+  title: string;
   amount: number;
-  tags: string[];
-  date: string;
+  datetime: string;
+  transaction_type: string;
   description: string;
+  tag: Tag[];
 }
 
 export interface dateType {

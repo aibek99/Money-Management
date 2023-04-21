@@ -1,12 +1,19 @@
 <script lang="ts">
   import Chart from '$lib/charts/pie.svelte'; 
   import Line from '$lib/charts/line.svelte';     
-	import Balance from "../../lib/transactions/Balance.svelte";
+  import Balance from "../../lib/transactions/Balance.svelte";
+  import _ from "../../lib/transactions/fetchApi";
+
 
 	let name: string = '';
 	let surname: string = '';
 	let email: string = '';
 	let username: string = '';
+
+	_.getAllTransactions();
+
+
+
 
 </script>
 
@@ -21,7 +28,7 @@
 			<p>Surname: {surname}</p>
 			<p>Username: {username}</p>
 			<p>email: {email}</p>
-			<button>edit</button>
+			<button>Edit</button>
 		</div>
 	</div>
 	<div class="cards">

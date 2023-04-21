@@ -1,12 +1,70 @@
 <script lang="ts">
+
+	import { onMount } from 'svelte';
+
 	let title: string = '';
 	let amount: number = 0;
 	let tag: string = '';
 	let scoops: number = 1;
+
+	function handleSubmit(event: Event) {
+
+		const tagList = tag.split(',').map(tag => {
+			return {"name": tag.trim()}
+		});
+
+		event.preventDefault();
+
+		const data = {
+			title: title,
+			amount: amount,
+			tag: tagList,
+			datetime: new Date().toISOString(),
+			transaction_type: scoops === 1 ? 'expense' : 'income',
+			};
+
+		console.log(data);
+
+		// Clear form fields
+		title = '';
+		amount = 0;
+		tag = '';
+		scoops = 1;
+
+		// fetch('/api/transactions/', {
+		// 	method: 'POST',
+		// 	headers: { 'Content-Type': 'application/json' },
+		// 	body: JSON.stringify(data),
+		// })
+		// .then((response) => {
+		// 	if (!response.ok) {
+		// 	throw new Error(response.statusText);
+		// 	}
+		// 	return response.json();
+		// })
+		// .then((data) => {
+		// 	console.log('Transaction created successfully:', data);
+		// 	// Clear form fields
+		// 	title = '';
+		// 	amount = 0;
+		// 	tag = '';
+		// 	scoops = 1;
+		// })
+		// .catch((error) => {
+		// 	console.error('Error creating transaction:', error);
+		// });
+	}
+
+
+	onMount(() => {
+		// Set the default datetime value to the current date and time
+		const now = new Date().toISOString().slice(0, 16);
+		(document.querySelector('input[type="datetime-local"]') as HTMLInputElement).value = now;
+	});
 </script>
 
 <div>
-	<form action="">
+	<form on:submit={handleSubmit}>
 		<label for="Title">Title:</label> <br />
 		<input type="text" bind:value={title} placeholder="title of transaction" /> <br />
 		<label for="amount">amount:</label> <br />
