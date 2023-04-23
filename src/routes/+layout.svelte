@@ -27,6 +27,7 @@
 	main {
 		background-color: #121212;
 		color: white;
+		min-height: calc(100vh - 120px);
 		/*TODO Make main min-height of screen size*!*/
 	}
 </style>

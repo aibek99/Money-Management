@@ -16,6 +16,27 @@
     }
 </script>
 
+
+<div class="container">
+	<h1>Register</h1>
+	<form method="post">
+		<input type="text" placeholder="Email" name="email" required />
+		<input type="password" bind:value={password} placeholder="Password" name="password" required />
+		{#if form?.errorMessage}
+			<div class="has-text-danger">{form.errorMessage}</div>
+		{/if}
+        <input type="password" bind:value={passwordConfirmation} placeholder="Password confirmation" name="password" required />
+		{#if form?.errorMessage}
+			<div class="has-text-danger">{form.errorMessage}</div>
+		{/if}
+        <button on:click={validatePassword} type="submit" formaction="?/register">Register</button>
+        {#if !passwordsMatch}
+            <p style="color: red;">Passwords don't match</p>
+        {/if}
+	</form>
+</div>
+
+
 <style>
 	.container {
         background-color: skyblue;
@@ -23,7 +44,7 @@
 		color: #fff;
 		display: flex;
 		flex-direction: column;
-		height: 100vh;
+		min-height: calc(100vh - 150px);
 		justify-content: center;
 		align-items: center;
 		padding: 1rem;
@@ -68,26 +89,6 @@
 		margin-top: 0.5rem;
 	}
 </style>
-
-<div class="container">
-	<h1>Register</h1>
-	<form method="post">
-		<input type="text" placeholder="Email" name="email" required />
-		<input type="password" bind:value={password} placeholder="Password" name="password" required />
-		{#if form?.errorMessage}
-			<div class="has-text-danger">{form.errorMessage}</div>
-		{/if}
-        <input type="password" bind:value={passwordConfirmation} placeholder="Password confirmation" name="password" required />
-		{#if form?.errorMessage}
-			<div class="has-text-danger">{form.errorMessage}</div>
-		{/if}
-        <button on:click={validatePassword} type="submit" formaction="?/register">Register</button>
-		<a href="/login" class="ifthecase">If you have account, sign in into your account!</a>
-        {#if !passwordsMatch}
-            <p style="color: red;">Passwords don't match</p>
-        {/if}
-	</form>
-</div>
 
 
 <!-- <button type="submit" formaction="?/register">Register</button> -->

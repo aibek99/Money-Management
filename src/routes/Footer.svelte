@@ -10,6 +10,10 @@
 
 <style>
   .footer-container {
+      display: flex;
+      flex-direction: row;
+      position: relative;
+      bottom: 0;
       background-color: black;
       color: white;
       display: flex;

@@ -1,6 +1,6 @@
 <script lang="ts">
   import { transactions } from "../../lib/transactions/getTransactions.ts";
-  import TableHeader from "../../lib/History/TableHeader.svelte";
+  import TableHeader from "../../lib/history/TableHeader.svelte";
   import FilterDropdown from "../../lib/history/FilterDropdown.svelte";
   import type { Filter, Transaction } from "../../lib/types";
   import { toDate } from "../../lib/transactions/date";
