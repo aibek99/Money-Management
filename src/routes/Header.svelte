@@ -7,7 +7,6 @@
 		dropdownOpen = !dropdownOpen;
 	}
 </script>
-
 <header class="header-container" bind:this={header}>
 	<div class="header-left">
 		<img src="favicon.png" alt="Logo" class="header-logo" />
