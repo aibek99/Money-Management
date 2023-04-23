@@ -33,7 +33,7 @@
     <i class="fa-solid fa-arrow-trend-up"></i>
   </div>
   <div class="col right-col">
-    <strong>Expenses</strong>
+    <strong>Income</strong>
     <button on:click={toggleFilter}>
       {#if openFilter}
         <i class="fa-solid fa-calendar-xmark"></i>
