@@ -92,7 +92,7 @@
     <tbody>
     {#each show_transactions as transaction}
       <tr>
-        <td>{transaction.name}</td>
+        <td> <a href="/history/{transaction.name}"> {transaction.name} </a></td>
         <td class={transaction.type}>{transaction.type}</td>
         <td>{transaction.amount}</td>
         <td>{transaction.date}</td>
