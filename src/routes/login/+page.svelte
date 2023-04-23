@@ -4,15 +4,15 @@
 </script>
 
 <div class="container">
-	<h1>Login or Register</h1>
+	<h1>Login</h1>
 	<form method="post">
-		<input type="text" placeholder="Username" name="username" required />
+		<input type="text" placeholder="Email" name="email" required />
 		<input type="password" placeholder="Password" name="password" required />
 		{#if form?.errorMessage}
 			<div class="has-text-danger">{form.errorMessage}</div>
 		{/if}
-		<button type="submit" formaction="?/register">Register</button>
 		<button class="is-primary" type="submit" formaction="?/login">Login</button>
+		<a href="/signup" class="ifthecase">If you don't have account, register new account!</a>
 	</form>
 </div>
 
@@ -23,7 +23,7 @@
 		color: #fff;
 		display: flex;
 		flex-direction: column;
-		height: 100vh;
+		min-height: calc(100vh - 150px);
 		justify-content: center;
 		align-items: center;
 		padding: 1rem;
@@ -72,18 +72,6 @@
 	}
 </style>
 
-<div class="container">
-	<h1>Login</h1>
-	<form method="post">
-		<input type="text" placeholder="Email" name="email" required />
-		<input type="password" placeholder="Password" name="password" required />
-		{#if form?.errorMessage}
-			<div class="has-text-danger">{form.errorMessage}</div>
-		{/if}
-		<button class="is-primary" type="submit" formaction="?/login">Login</button>
-		<a href="/signup" class="ifthecase">If you don't have account, register new account!</a>
-	</form>
-</div>
 
 
 <!-- <button type="submit" formaction="?/register">Register</button> -->
