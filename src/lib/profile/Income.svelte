@@ -30,7 +30,7 @@
 
 <div class="card">
   <div class="col left-col">
-    <i class="fa-solid fa-wallet fa-lg"></i>
+    <i class="fa-solid fa-arrow-trend-up"></i>
   </div>
   <div class="col right-col">
     <strong>Expenses</strong>
@@ -70,7 +70,7 @@
         width: 100%;
     }
 
-    .fa-wallet {
+    .fa-arrow-trend-up {
         width: 50px;
         height: 50px;
         display: grid;
