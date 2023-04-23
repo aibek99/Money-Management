@@ -21,6 +21,8 @@
 	<h1>Register</h1>
 	<form method="post">
 		<input type="text" placeholder="Email" name="email" required />
+		<input type="text" placeholder="First name" name="firstname" required />
+		<input type="text" placeholder="Last name" name="lastname" required />
 		<input type="password" bind:value={password} placeholder="Password" name="password" required />
 		{#if form?.errorMessage}
 			<div class="has-text-danger">{form.errorMessage}</div>
@@ -30,6 +32,7 @@
 			<div class="has-text-danger">{form.errorMessage}</div>
 		{/if}
         <button on:click={validatePassword} type="submit" formaction="?/register">Register</button>
+		<a href="/login" class="ifthecase">If you have account, sign in with your account!</a>
         {#if !passwordsMatch}
             <p style="color: red;">Passwords don't match</p>
         {/if}
@@ -39,8 +42,7 @@
 
 <style>
 	.container {
-        background-color: skyblue;
-		background-size: cover;
+			background-size: cover;
 		color: #fff;
 		display: flex;
 		flex-direction: column;
