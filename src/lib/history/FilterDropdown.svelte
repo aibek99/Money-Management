@@ -99,9 +99,9 @@
         </th>
         <td>
           <div class="range-input">
-            <CustomInput label="From" type="text" onChange={dateClick} error={errorDate} />
+            <CustomInput label="From" onChange={dateClick} error={errorDate} />
             <span>-</span>
-            <CustomInput label="To" type="text" onChange={dateClick} error={errorDate}/>
+            <CustomInput label="To" onChange={dateClick} error={errorDate} />
           </div>
         </td>
       </tr>
