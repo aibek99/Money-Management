@@ -18,8 +18,6 @@
         || (toDate(transaction.date) <= date.to && date.from == null)) {
         if (transaction.type == "income")
           balance += transaction.amount;
-        else
-          balance -= transaction.amount;
       }
     }
   }
@@ -35,7 +33,7 @@
     <i class="fa-solid fa-wallet fa-lg"></i>
   </div>
   <div class="col right-col">
-    <strong>Balance</strong>
+    <strong>Expenses</strong>
     <button on:click={toggleFilter}>
       {#if openFilter}
         <i class="fa-solid fa-calendar-xmark"></i>
@@ -55,7 +53,7 @@
         padding: 10px;
         display: flex;
         border-radius: 10px;
-        background: linear-gradient(to bottom right, green, #121212);
+        background: linear-gradient(to bottom right, blue, #121212);
         border: 1px solid white;
         width: 25%;
         gap: 10px;

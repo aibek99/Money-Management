@@ -1,10 +1,12 @@
 <script lang="ts">
 	import Balance from "../../lib/profile/Balance.svelte";
+	import Income from "../../lib/profile/Income.svelte";
+	import Expense from "../../lib/profile/Expense.svelte";
 
-	let name = '';
-	let surname = '';
-	let email = '';
-	let username = '';
+	let name = 'DefaultName';
+	let surname = 'DefaultSurname';
+	let email = 'Default@mail.ru';
+	let username = 'DefaultUsername';
 </script>
 
 <svelte:head>
@@ -14,23 +16,17 @@
 <div>
 	<div class="profile-page">
 		<div class="information">
-			<p>Name: {name}</p>
-			<p>Surname: {surname}</p>
+			<p>Hi {name} {surname}</p>
 			<p>Username: {username}</p>
 			<p>email: {email}</p>
-			<button>edit</button>
+			<p>What did you spend this time</p>
+			<button class="edit-profile"><i class="fa-solid fa-gears"></i></button>
 		</div>
 	</div>
 	<div class="cards">
-		<div class="balance-card">
-			<Balance/>
-		</div>
-		<div class="income-card">
-
-		</div>
-		<div class="expense-card">
-
-		</div>
+			<Balance class="card"/>
+			<Income class="card"/>
+			<Expense class="card"/>
 	</div>
 	<div>
 		<div class="add-transaction">
@@ -44,7 +40,7 @@
 
 <style>
 	button {
-		width: 40%;
+		all: unset;
 	}
 
 	.profile-page {
@@ -63,7 +59,15 @@
 		padding: 15px;
 	}
 
-	.charts {
-		flex: 4;
+	.cards {
+		display: flex;
+		justify-content: space-evenly;
 	}
+
+
+	.edit-profile {
+		position: absolute;
+		float: right;
+	}
+
 </style>

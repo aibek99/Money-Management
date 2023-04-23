@@ -1,12 +1,11 @@
 <script lang="ts">
-  import CustomInput from "../history/CustomInput.svelte";
-  import { isDate, toDate } from "../transactions/date";
-  import { splitDate } from "$lib/transactions/date.js";
+  import { defaultFormat, toDateLine} from "../transactions/date";
 
   export let date;
   export let changeBalance;
-  let error = false;
-  let button = "";
+  export let button = "none";
+  let formattedFrom = defaultFormat(date.from);
+  let formattedTo = defaultFormat(date.to);
 
   function lastMonthButton() {
     button = "month";
@@ -15,6 +14,8 @@
     lastMonth.setMonth(lastMonth.getMonth() - 1);
     date.from = lastMonth;
     changeBalance();
+    formattedFrom = defaultFormat(date.from);
+    formattedTo = defaultFormat(date.to);
   }
 
   function lastYearButton() {
@@ -24,41 +25,40 @@
     lastYear.setFullYear(lastYear.getFullYear() - 1);
     date.from = lastYear;
     changeBalance();
+    formattedFrom = defaultFormat(date.from);
+    formattedTo = defaultFormat(date.to);
   }
 
-  function allButton() {
+  function allPeriodButton() {
     button = "all";
     date.to = null;
     date.from = null;
     changeBalance();
+    formattedFrom = defaultFormat(date.from);
+    formattedTo = defaultFormat(date.to);
   }
 
-  function dateChange(type, value) {
-    error = value != "" && !isDate(value);
-    if (type == "From")
-      date.from = value == "" ? null : toDate(value);
-    else if (type == "To")
-      date.to = value == "" ? null : toDate(value);
-    if (error)
-      date.from = date.to = null;
-    button = date.from == null && date.to == null ? "all" : "none";
+  function handleChange(type, event) {
+    let value = event.target.value;
+    if (type == 'from')
+      date.from = toDateLine(value);
+    else if (type == 'to')
+      date.to = toDateLine(value);
     changeBalance();
-  }
-
-  function dateSave(value) {
-
+    button = "none";
+    formattedFrom = defaultFormat(date.from);
+    formattedTo = defaultFormat(date.to);
   }
 </script>
 
 <div class="filter">
   <div class="range-input">
-    <CustomInput label="From" type="text" onChange={dateChange} error={error} value={splitDate(date.from)}/>
+    <input type="date" on:change={() => handleChange('from', event)} bind:value={formattedFrom}>
     <span>-</span>
-    <CustomInput label="To" type="text" onChange={dateChange} error={error} value={splitDate(date.to)}/>
+    <input type="date" on:change={() => handleChange('to', event)} bind:value={formattedTo}>
   </div>
-  <div class="rules">mm.dd.yyyy</div>
   <div class="row">
-    <button class:active={button === 'all'} on:click={allButton}>All period</button>
+    <button class:active={button === 'all'} on:click={allPeriodButton}>All period</button>
     <button class:active={button === 'month'} on:click={lastMonthButton}>Last month</button>
     <button class:active={button === 'year'} on:click={lastYearButton}>Last year</button>
   </div>
@@ -96,10 +96,10 @@
         font-size: 14px;
     }
 
-    .rules {
-        display: grid;
-        justify-items: center;
-        font-size: 10px;
-        color: gray;
+    input {
+        border-radius: 10px;
+        background-color: #444444;
+        padding: 2px;
+        margin: 2px;
     }
 </style>
