@@ -63,6 +63,7 @@
         padding: 2rem;
     }
     .title {
+        position: relative;
         font-size: 3rem;
         text-align: center;
         margin-bottom: 2rem;
@@ -76,8 +77,8 @@
         text-align: center;
     }
     .member img {
-        width: 300px;
-        height: 300px;
+        width: 80%;
+        aspect-ratio: 1/1;
         overflow: hidden;
         border-radius: 50%;
         margin-bottom: 1rem;
