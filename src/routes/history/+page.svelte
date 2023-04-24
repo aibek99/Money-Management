@@ -50,7 +50,7 @@
     if (f.tags.length)
       show_transactions = show_transactions.filter(a => {
         for (const tag of f.tags)
-          if (!a.tags.some(e => e.name === tag.name))
+          if (!a.tags.some(e => e.name === tag))
             return false;
         return true;
       });
@@ -99,7 +99,7 @@
         <td>{transaction.amount}</td>
         <td>{transaction.date}</td>
         <td>
-          {#each transaction.tags as tag}<span>{tag}</span>{/each}
+          {#each transaction.tags as tag}<span>{tag.name}</span>{/each}
         </td>
         <td class="description">{transaction.description}</td>
       </tr>

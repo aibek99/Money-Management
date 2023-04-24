@@ -4,7 +4,7 @@ export interface Filter {
     from: null | number,
     to: null | number
   },
-  tags: Tag[],
+  tags: string[],
   date: {
     from: null | Date,
     to: null | Date

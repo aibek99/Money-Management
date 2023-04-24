@@ -3,7 +3,7 @@
   import type { Filter, TransType } from "../types";
   import { Tags } from "../types";
   import { toDate } from "../transactions/date";
-  import type { HTMLInputAttributes, HTMLInputTypeAttribute, SvelteHTMLElements } from "svelte/elements";
+  import type { SvelteHTMLElements } from "svelte/elements";
 
   export let filter: Filter;
   let formattedFrom = '';
@@ -21,8 +21,8 @@
 
   function tagClick(tag: string) {
     const tags = [...filter.tags];
-    if (tags.some(e => e.name == tag))
-      tags.splice(tags.findIndex(e => e.name == tag), 1);
+    if (tags.includes(tag))
+      tags.splice(tags.indexOf(tag), 1);
     else
       tags.push(tag);
     filter.tags = tags;
