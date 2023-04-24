@@ -36,13 +36,11 @@
     <title>Profile</title>
 </svelte:head>
 
-<div>
+<div class="profile-wrapper">
     <div class="profile-page">
         <div class="information">
             <p>Hi {name} {surname}</p>
             <p>email: {email}</p>
-            <p>What did you spend this time</p>
-            <button class="edit-profile"><i class="fa-solid fa-gears"></i></button>
         </div>
     </div>
     <div class="cards">
@@ -58,9 +56,10 @@
 </div>
 
 <style>
-    button {
-        width: 40%
+    .profile-wrapper {
+        font-family: Kanit, sans-serif;
     }
+
 
     .profile-page {
         display: flex;
@@ -69,48 +68,24 @@
     }
 
     .information {
-        height: 300px;
-        border: 2px solid black;
+        border: 1px solid white;
         border-radius: 10px;
+        background: linear-gradient(to bottom right, #444444, black);
         flex: 2;
         display: flex;
         flex-direction: column;
         padding: 15px;
+        font-size: 20px;
+        line-height: 8px;
     }
 
     .charts {
         flex: 4
     }
 
-    button {
-        all: unset;
-    }
-
-    .profile-page {
-        display: flex;
-        justify-content: space-between;
-        margin: 50px;
-    }
-
-    .information {
-        border: 2px black;
-        border-style: solid;
-        border-radius: 10px;
-        flex: 2;
-        display: flex;
-        flex-direction: column;
-        padding: 15px;
-    }
-
     .cards {
         display: flex;
         justify-content: space-evenly;
-    }
-
-
-    .edit-profile {
-        position: absolute;
-        float: right;
     }
 
 </style>

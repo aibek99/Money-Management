@@ -69,6 +69,7 @@
 
     .right-col {
         width: 100%;
+        position: relative;
     }
 
     .fa-wallet {
