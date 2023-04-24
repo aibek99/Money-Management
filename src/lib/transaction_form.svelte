@@ -116,7 +116,10 @@
 	.form-wrapper {
 		border-radius: 5px;
 		background-color: #3d3b3b;
-		padding: 5%;
+		padding-left: 8%;
+		padding-right: 8%;
+		padding-top: 5%;
+		padding-bottom: 5%;
         font-family: 'Roboto', sans-serif;
 	}
 
