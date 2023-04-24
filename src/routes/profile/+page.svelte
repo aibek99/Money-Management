@@ -117,9 +117,10 @@
 </div>
 
 <style>
-    button {
-        width: 40%
+    .profile-wrapper {
+        font-family: Kanit, sans-serif;
     }
+
 
     .profile-page {
         display: flex;
@@ -128,13 +129,15 @@
     }
 
     .information {
-        height: 300px;
-        border: 2px solid black;
+        border: 1px solid white;
         border-radius: 10px;
+        background: linear-gradient(to bottom right, #444444, black);
         flex: 2;
         display: flex;
         flex-direction: column;
         padding: 15px;
+        font-size: 20px;
+        line-height: 8px;
     }
 
   .charts {
@@ -151,35 +154,9 @@
 		all: unset;
 	}
 
-    button {
-        all: unset;
-    }
-
-    .profile-page {
-        display: flex;
-        justify-content: space-between;
-        margin: 50px;
-    }
-
-    .information {
-        border: 2px black;
-        border-style: solid;
-        border-radius: 10px;
-        flex: 2;
-        display: flex;
-        flex-direction: column;
-        padding: 15px;
-    }
-
     .cards {
         display: flex;
         justify-content: space-evenly;
-    }
-
-
-    .edit-profile {
-        position: absolute;
-        float: right;
     }
 
 </style>

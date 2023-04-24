@@ -1,50 +1,51 @@
 <script lang="ts">
-  import { transactions } from "../transactions/getTransactions";
-  import type { dateType } from "../types";
-  import BalanceFilterDropdown from "./DateFilterDropdown.svelte";
+    import {transactions} from "../transactions/getTransactions";
+    import type {dateType} from "../types";
+    import BalanceFilterDropdown from "./DateFilterDropdown.svelte";
 
-  let date: dateType = { from: null, to: null };
+    let date: dateType = {from: null, to: null};
 
-  let balance = 0;
-  let button = "all";
-  let openFilter = false;
+    let balance = 0;
+    let button = "all";
+    let openFilter = false;
 
-  function changeBalance() {
-    balance = 0;
-    for (const transaction of transactions) {
-      if ((transaction.date >= date.from && transaction.date <= date.to)
-        || (date.to == null && date.from == null) || (transaction.date >= date.from && date.to == null)
-        || (transaction.date <= date.to && date.from == null)) {
-        if (transaction.type == "income")
-          balance += transaction.amount;
-      }
+    function changeBalance() {
+        balance = 0;
+        for (const transaction of transactions) {
+            if ((transaction.date >= date.from && transaction.date <= date.to)
+                || (date.to == null && date.from == null) || (transaction.date >= date.from && date.to == null)
+                || (transaction.date <= date.to && date.from == null)) {
+                if (transaction.type == "income")
+                    balance += transaction.amount;
+            }
+        }
     }
-  }
 
-  function toggleFilter() {
-    openFilter = !openFilter;
-  }
-  changeBalance();
+    function toggleFilter() {
+        openFilter = !openFilter;
+    }
+
+    changeBalance();
 </script>
 
 <div class="card">
-  <div class="col left-col">
-    <i class="fa-solid fa-arrow-trend-up"></i>
-  </div>
-  <div class="col right-col">
-    <strong>Income</strong>
-    <button on:click={toggleFilter}>
-      {#if openFilter}
-        <i class="fa-solid fa-calendar-xmark"></i>
-      {:else}
-        <i class="fa-solid fa-calendar-check"></i>
-      {/if}
-    </button>
-    {#if openFilter}
-      <BalanceFilterDropdown changeBalance={changeBalance} date={date} bind:button={button}/>
-    {/if}
-    <div class="balance">{balance}</div>
-  </div>
+    <div class="col left-col">
+        <i class="fa-solid fa-arrow-trend-up"></i>
+    </div>
+    <div class="col right-col">
+        <strong>Income</strong>
+        <button on:click={toggleFilter}>
+            {#if openFilter}
+                <i class="fa-solid fa-calendar-xmark"></i>
+            {:else}
+                <i class="fa-solid fa-calendar-check"></i>
+            {/if}
+        </button>
+        {#if openFilter}
+            <BalanceFilterDropdown changeBalance={changeBalance} date={date} bind:button={button}/>
+        {/if}
+        <div class="balance">{balance}</div>
+    </div>
 </div>
 
 <style>
@@ -67,6 +68,7 @@
 
     .right-col {
         width: 100%;
+        position: relative;
     }
 
     .fa-arrow-trend-up {
