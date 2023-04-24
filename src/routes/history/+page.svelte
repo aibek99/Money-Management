@@ -9,7 +9,7 @@
 
   let sort = { column: "Date", asc: true };
 
-  function sortBy(column) {
+  function sortBy(column: string) {
     if (sort.column === column) sort.asc = !sort.asc;
     else {
       sort.column = column;
@@ -50,16 +50,16 @@
     if (f.tags.length)
       show_transactions = show_transactions.filter(a => {
         for (const tag of f.tags)
-          if (!a.tags.includes(tag))
+          if (!a.tags.some(e => e.name === tag.name))
             return false;
         return true;
       });
     if (f.date.from != null && f.date.to != null)
-      show_transactions = show_transactions.filter(a => toDate(a.date) >= toDate(<string>f.date.from) && toDate(a.date) <= toDate(<string>f.date.to));
+      show_transactions = show_transactions.filter(a => toDate(a.date) >= f.date.from && toDate(a.date) <= f.date.to);
     if (f.date.from != null)
-      show_transactions = show_transactions.filter(a => toDate(a.date) >= toDate(<string>f.date.from));
+      show_transactions = show_transactions.filter(a => toDate(a.date) >= f.date.from);
     if (f.date.to != null)
-      show_transactions = show_transactions.filter(a => toDate(a.date) <= toDate(<string>f.date.to));
+      show_transactions = show_transactions.filter(a => toDate(a.date) <= f.date.to);
     sorting();
   }
 </script>
@@ -75,7 +75,9 @@
       <button on:click={toggleFilter}>
         <i class="fa-solid fa-filter-circle-dollar fa-xl"></i>
       </button>
-      <FilterDropdown on:change={() => filterBy(filter)} filter={filter} visible={filterOpen} />
+      {#if filterOpen}
+        <FilterDropdown on:change={() => filterBy(filter)} filter={filter} />
+      {/if}
     </div>
   </div>
   <table>
@@ -92,7 +94,7 @@
     <tbody>
     {#each show_transactions as transaction}
       <tr>
-        <td> <a href="/history/{transaction.name}"> {transaction.name} </a></td>
+        <td><a href="/history/{transaction.name}"> {transaction.name} </a></td>
         <td class={transaction.type}>{transaction.type}</td>
         <td>{transaction.amount}</td>
         <td>{transaction.date}</td>
