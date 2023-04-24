@@ -3,7 +3,7 @@
   import TableHeader from "../../lib/history/TableHeader.svelte";
   import FilterDropdown from "../../lib/history/FilterDropdown.svelte";
   import type { Filter, Transaction } from "../../lib/types";
-  import { toDate } from "../../lib/transactions/date";
+  import {splitDate} from "../../lib/transactions/date.js";
 
   let show_transactions: Transaction[] = transactions;
 
@@ -24,7 +24,7 @@
       if (sort.column === "Name") cmp = a.name.localeCompare(b.name);
       else if (sort.column === "Type") cmp = a.type.localeCompare(b.type);
       else if (sort.column === "Amount") cmp = a.amount - b.amount;
-      else if (sort.column === "Date") cmp = toDate(a.date) - toDate(b.date);
+      else if (sort.column === "Date") cmp = a.date - b.date;
       else if (sort.column === "Description") cmp = a.description.localeCompare(b.description);
       return sort.asc ? cmp : -cmp;
     });
@@ -50,16 +50,16 @@
     if (f.tags.length)
       show_transactions = show_transactions.filter(a => {
         for (const tag of f.tags)
-          if (!a.tags.some(e => e.name === tag.name))
+          if (!a.tags.some(e => e.name === tag))
             return false;
         return true;
       });
     if (f.date.from != null && f.date.to != null)
-      show_transactions = show_transactions.filter(a => toDate(a.date) >= f.date.from && toDate(a.date) <= f.date.to);
+      show_transactions = show_transactions.filter(a => a.date >= f.date.from && a.date <= f.date.to);
     if (f.date.from != null)
-      show_transactions = show_transactions.filter(a => toDate(a.date) >= f.date.from);
+      show_transactions = show_transactions.filter(a => a.date >= f.date.from);
     if (f.date.to != null)
-      show_transactions = show_transactions.filter(a => toDate(a.date) <= f.date.to);
+      show_transactions = show_transactions.filter(a => a.date <= f.date.to);
     sorting();
   }
 </script>
@@ -97,9 +97,9 @@
         <td><a href="/history/{transaction.name}"> {transaction.name} </a></td>
         <td class={transaction.type}>{transaction.type}</td>
         <td>{transaction.amount}</td>
-        <td>{transaction.date}</td>
+        <td>{splitDate(transaction.date)}</td>
         <td>
-          {#each transaction.tags as tag}<span>{tag}</span>{/each}
+          {#each transaction.tags as tag}<span>{tag.name}</span>{/each}
         </td>
         <td class="description">{transaction.description}</td>
       </tr>
