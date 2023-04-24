@@ -14,10 +14,12 @@
 
   export let numbers : number[]; 
   export let names : string[];
+  export let type: string;
   var data = {
   labels: names,
   datasets: [
     {
+      label: `${type}`,
       data: numbers,
     },
   ],

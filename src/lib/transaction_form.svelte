@@ -7,7 +7,7 @@
 	let title: string = '';
 	let amount: number = 0;
 	let tags: string[] = [];
-	let type: string = "income";
+	let type: "income" | "expense";
 	let description: string = ""
 	let datetime: string = '';
 
@@ -32,12 +32,12 @@
 		tags = tempTags
 	}
 
-	function typeClick(typeChoosed : string) {
+	function typeClick(typeChoosed : "income" | "expense") {
 		type = typeChoosed
 	}
 
 
-	function handleSubmit(event: Event) {
+	async function handleSubmit(event: Event) {
 
 		const tagList = tags.map((tag) => {
 			return { name: tag };
@@ -53,13 +53,10 @@
 			description: description
 			};
 
-		console.log(data);
 
-		const response: any = _.postTransaction(data);
+		const response = await _.postTransaction(data);
 
 		if (response.success){
-			console.log(data);
-			const response: any = _.postTransaction(data);
 			if (response.success){
 				title = '';
 				amount = 0;
