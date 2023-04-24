@@ -1,11 +1,11 @@
 <script lang="ts">
-  import { defaultFormat, toDateLine} from "../transactions/date";
+  import { splitDate, toDate} from "../transactions/date";
 
   export let date;
   export let changeBalance;
   export let button = "none";
-  let formattedFrom = defaultFormat(date.from);
-  let formattedTo = defaultFormat(date.to);
+  let formattedFrom = splitDate(date.from);
+  let formattedTo = splitDate(date.to);
 
   function lastMonthButton() {
     button = "month";
@@ -14,8 +14,8 @@
     lastMonth.setMonth(lastMonth.getMonth() - 1);
     date.from = lastMonth;
     changeBalance();
-    formattedFrom = defaultFormat(date.from);
-    formattedTo = defaultFormat(date.to);
+    formattedFrom = splitDate(date.from);
+    formattedTo = splitDate(date.to);
   }
 
   function lastYearButton() {
@@ -25,8 +25,8 @@
     lastYear.setFullYear(lastYear.getFullYear() - 1);
     date.from = lastYear;
     changeBalance();
-    formattedFrom = defaultFormat(date.from);
-    formattedTo = defaultFormat(date.to);
+    formattedFrom = splitDate(date.from);
+    formattedTo = splitDate(date.to);
   }
 
   function allPeriodButton() {
@@ -34,20 +34,20 @@
     date.to = null;
     date.from = null;
     changeBalance();
-    formattedFrom = defaultFormat(date.from);
-    formattedTo = defaultFormat(date.to);
+    formattedFrom = splitDate(date.from);
+    formattedTo = splitDate(date.to);
   }
 
   function handleChange(type, event) {
     let value = event.target.value;
     if (type == 'from')
-      date.from = toDateLine(value);
+      date.from = toDate(value);
     else if (type == 'to')
-      date.to = toDateLine(value);
+      date.to = toDate(value);
     changeBalance();
     button = "none";
-    formattedFrom = defaultFormat(date.from);
-    formattedTo = defaultFormat(date.to);
+    formattedFrom = splitDate(date.from);
+    formattedTo = splitDate(date.to);
   }
 </script>
 
