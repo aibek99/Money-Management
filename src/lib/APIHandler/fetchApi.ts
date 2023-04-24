@@ -1,129 +1,134 @@
 import {API_BASE_URL, token} from "./config";
 
-import type {PTransaction, responseAllTransaction, responseTransaction, responseUser, Transaction} from "./types";
+import type {PTransaction, responseAllTransaction, responseTransaction, responseUser, TransactionData, TagData} from "./types";
 
 
-async function postTransaction(data: PTransaction): Promise<responseTransaction | void> {
-    await fetch(`${API_BASE_URL}transaction/`, {
+async function postTransaction(data: PTransaction): Promise<responseTransaction> {
+    const response = await fetch(`${API_BASE_URL}transaction/`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json', "Authorization": `Token ${token}`},
         body: JSON.stringify(data),
-    })
-    .then((response) => {
-        if (!response.ok) {
-        throw new Error(response.statusText);
-        }
-        return {'success':true,
-                'data':response.json()};
-    })
-    .catch((error) => {
-        console.error('Error creating transaction:', error);
+    });
+    
+    if (!response.ok) {
+        console.error('Error Posting Transactions', response.statusText);
         return {'success':false,
                 'data':null};
-    });
+    }else{
+        const responseData = await response.json();
+        return {'success':true,
+            'data': responseData};
+    }
 };
 
 
 
-async function getUser(): Promise<responseUser | void> {
-    await fetch(`${API_BASE_URL}user/`, {
+async function getUser(): Promise<responseUser> {
+    const response =  await fetch(`${API_BASE_URL}user/`, {
         method: 'GET',
         headers: { 'Content-Type': 'application/json', "Authorization": `Token ${token}`},
-    })
-    .then((response) => {
-        if (!response.ok) {
-        throw new Error(response.statusText);
-        }
-        return {'success':true,
-                'data':response.json()};
-    })
-    .catch((error) => {
-        console.error('Error Getting user:', error);
+    });
+
+    if (!response.ok) {
         return {'success':false,
                 'data':null};
-    });
+    // throw new Error(response.statusText);
+    }else{
+        const responseData = await response.json();
+        return {'success':true,
+            'data': responseData};
+    }
 }
 
 
-async function getAllTransactions(): Promise<responseAllTransaction | void> {
-    await fetch(`${API_BASE_URL}transaction/`, {
+async function getAllTransactions(): Promise<responseAllTransaction> {
+    const response =  await fetch(`${API_BASE_URL}transaction/`, {
         method: 'GET',
         headers: { 'Content-Type': 'application/json', "Authorization": `Token ${token}`},
-    })
-    .then((response) => {
-        if (!response.ok) {
-        throw new Error(response.statusText);
-        }
-        return {'success':true,
-                'data':response.json()};
-    })
-    .catch((error) => {
-        console.error('Error Getting Transactions:', error);
+    });
+
+    if (!response.ok) {
+        console.error('Error Getting Transactions:', response.statusText);
         return {'success':false,
                 'data':null};
-    });
+    // throw new Error(response.statusText);
+    }else{
+        const responseData = await response.json();
+        return {'success':true,
+            'data': responseData};
+    }
 }
 
-async function getTransaction(id: number): Promise<responseTransaction | void> {
-    await fetch(`${API_BASE_URL}transaction/${id}`, {
+async function getTransaction(id: number): Promise<responseTransaction> {
+
+    const response = await fetch(`${API_BASE_URL}transaction/${id}`, {
         method: 'GET',
         headers: { 'Content-Type': 'application/json', "Authorization": `Token ${token}`},
-    })
-    .then((response) => {
-        if (!response.ok) {
-        throw new Error(response.statusText);
-        }
-        return {'success':true,
-                'data':response.json()};
-    })
-    .catch((error) => {
-        console.error('Error Getting Transaction for id=', id, error);
+    });
+
+    if (!response.ok) {
+        console.error('Error Getting Transaction for id=', id, response.statusText);
         return {'success':false,
                 'data':null};
-    });
+    }else{
+        const responseData = await response.json();
+        return {'success':true,
+            'data': responseData};
+    }
 }
 
-async function deleteTransaction(id: number): Promise<boolean | void> {
-    
-    await fetch(`${API_BASE_URL}transaction/${id}`, {
+async function deleteTransaction(id: number): Promise<boolean> {
+    const response = await fetch(`${API_BASE_URL}transaction/${id}`, {
         method: 'DELETE',
         headers: { 'Content-Type': 'application/json', "Authorization": `Token ${token}`},
-    })
-    .then((response) => {
-        if (!response.ok) {
-        return false;
-        }
-        return true;
-    })
-    .catch((error) => {
-        console.error('Error Deleting Transaction for id=', id, error);
-        return false;
     });
+
+    if (!response.ok) {
+        console.error('Error Getting Transaction for id=', id, response.statusText);
+        return false;
+    }else{
+        return true;
+    }
 }
 
 
 
-async function putTransaction(data:Transaction): Promise<responseTransaction | void> {
-    await fetch(`${API_BASE_URL}transaction/`, {
+async function putTransaction(data:TransactionData): Promise<responseTransaction> {
+
+    const response = await fetch(`${API_BASE_URL}transaction/${data.id}`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json', "Authorization": `Token ${token}`},
         body: JSON.stringify(data),
     })
-    .then((response) => {
-        if (!response.ok) {
-        throw new Error(response.statusText);
-        }
-        return {'success':true,
-                'data':response.json()};
-    })
-    .catch((error) => {
-        console.error('Error Putting transaction:', error);
+
+    if (!response.ok) {
+        console.error('Error Putting Transaction for id=', data.id, response.statusText);
         return {'success':false,
                 'data':null};
-    });
+    }else{
+        const responseData = await response.json();
+        return {'success':true,
+            'data': responseData};
+    }
 };
 
 
+
+async function getAllTags(): Promise<TagData[] | null> {
+    const response =  await fetch(`${API_BASE_URL}tag/`, {
+        method: 'GET',
+        headers: { 'Content-Type': 'application/json', "Authorization": `Token ${token}`},
+    });
+
+    if (!response.ok) {
+        console.error('Error Getting Tags:', response.statusText);
+        return null;
+    // throw new Error(response.statusText);
+    }else{
+        const responseData = await response.json();
+        return responseData;
+    }
+}
 
 
 
@@ -133,7 +138,8 @@ const _ = {
     getAllTransactions,
     getTransaction,
     deleteTransaction,
-    putTransaction
+    putTransaction,
+    getAllTags
 }
 
 export default _;

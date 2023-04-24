@@ -5,15 +5,32 @@
 	import Chart from '$lib/charts/pie.svelte'; 
 	import Line from '$lib/charts/line.svelte';     
 	import _ from '../../lib/APIHandler/fetchApi';
+	import { onMount } from 'svelte';
+	import type {responseUser, userData} from '../../lib/APIHandler/types'; 
 
 	let name = 'DefaultName';
 	let surname = 'DefaultSurname';
 	let email = 'Default@mail.ru';
-	let username = 'DefaultUsername';
 
-	let data: any = _.getUser();
+	let data: userData | null;
 
-	console.log(data)
+	onMount(async () => {
+		const response: responseUser = await _.getUser();
+
+		if (response.success) {
+			data = response.data;
+			if (data){
+				name = data.first_name;
+				surname = data.last_name;
+				email = data.email;
+			}
+			
+		} else {
+			console.log("Not Loaded")
+		}
+	});
+
+	
 
 </script>
 
@@ -25,16 +42,15 @@
 	<div class="profile-page">
 		<div class="information">
 			<p>Hi {name} {surname}</p>
-			<p>Username: {username}</p>
 			<p>email: {email}</p>
 			<p>What did you spend this time</p>
 			<button class="edit-profile"><i class="fa-solid fa-gears"></i></button>
 		</div>
 	</div>
 	<div class="cards">
-			<Balance class="card"/>
-			<Income class="card"/>
-			<Expense class="card"/>
+			<Balance />
+			<Income />
+			<Expense />
   </div>
   <div class="charts">
     <Chart numbers={[300, 50, 100, 40, 120]} names={['Red', 'Green', 'Yellow', 'Grey', 'Dark Grey']} />
@@ -47,7 +63,7 @@
     width: 40%
   }
 
-  .profilePage{
+  .profile-page{
     display: flex;
     justify-content: space-between;
     margin: 50px;
@@ -55,9 +71,8 @@
 
   .information {
     height: 300px;
-    border: 2px black;
-    border-style: solid;
-    border-radius: 10px;
+		border: 2px solid black;
+		border-radius: 10px;
     flex: 2;
     display: flex;
     flex-direction: column;
