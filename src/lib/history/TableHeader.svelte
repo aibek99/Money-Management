@@ -1,7 +1,7 @@
 <script lang="ts">
 	export let column = 'default';
 	export let sort = { column: '', asc: true };
-	export let sortBy;
+	export let sortBy = () => {return};
 </script>
 
 <th>

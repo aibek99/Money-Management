@@ -2,14 +2,15 @@
 	import Balance from "../../lib/profile/Balance.svelte";
 	import Income from "../../lib/profile/Income.svelte";
 	import Expense from "../../lib/profile/Expense.svelte";
-	import Chart from '$lib/charts/pie.svelte'; 
-	import Line from '$lib/charts/line.svelte';     
+	import Chart from '../../lib/charts/pie.svelte';
+	import Line from '../../lib/charts/line.svelte';
 	import _ from '../../lib/APIHandler/fetchApi';
 	import { onMount } from 'svelte';
 	import type {responseUser, userData} from '../../lib/APIHandler/types';
-	import type { Filter, Transaction } from "../../lib/types";
+	import type { Transaction } from "../../lib/types";
 
 	import { transactions } from "../../lib/transactions/getTransactions";
+	import { splitDate } from "$lib/transactions/date";
 
 	let name = 'DefaultName';
 	let surname = 'DefaultSurname';
@@ -19,7 +20,7 @@
 
 	let show_transactions: Transaction[] = transactions;
 
-	const transactionDates = show_transactions.map((transaction) => transaction.date);
+	const transactionDates = show_transactions.map((transaction) => splitDate(transaction.date));
 	const transactionAmounts = show_transactions.map((transaction) => transaction.amount);
 
 	onMount(async () => {
@@ -49,13 +50,13 @@
 
 		const tagTotals: TagTotals = transactions.reduce((acc: TagTotals, transaction) => {
 		transaction.tags.forEach((tagName) => {
-			const existingTagTotal = acc[tagName] || { income: 0, expense: 0 };
+			const existingTagTotal = acc[tagName.name] || { income: 0, expense: 0 };
 			if (transaction.type === "income") {
 			existingTagTotal.income += transaction.amount;
 			} else {
 			existingTagTotal.expense += transaction.amount;
 			}
-			acc[tagName] = existingTagTotal;
+			acc[tagName.name] = existingTagTotal;
 		});
 		return acc;
 		}, {});
@@ -86,7 +87,7 @@
 </script>
 
 <svelte:head>
-	<title>Profile</title>
+    <title>Profile</title>
 </svelte:head>
 
 <div>
@@ -116,25 +117,25 @@
 </div>
 
 <style>
-  button {
-    width: 40%
-  }
+    button {
+        width: 40%
+    }
 
-  .profile-page{
-    display: flex;
-    justify-content: space-between;
-    margin: 50px;
-  }
+    .profile-page {
+        display: flex;
+        justify-content: space-between;
+        margin: 50px;
+    }
 
-  .information {
-    height: 300px;
-		border: 2px solid black;
-		border-radius: 10px;
-    flex: 2;
-    display: flex;
-    flex-direction: column;
-    padding: 15px;
-  }
+    .information {
+        height: 300px;
+        border: 2px solid black;
+        border-radius: 10px;
+        flex: 2;
+        display: flex;
+        flex-direction: column;
+        padding: 15px;
+    }
 
   .charts {
     flex: 2;
@@ -150,31 +151,35 @@
 		all: unset;
 	}
 
-	.profile-page {
-		display: flex;
-		justify-content: space-between;
-		margin: 50px;
-	}
+    button {
+        all: unset;
+    }
 
-	.information {
-		border: 2px black;
-		border-style: solid;
-		border-radius: 10px;
-		flex: 2;
-		display: flex;
-		flex-direction: column;
-		padding: 15px;
-	}
+    .profile-page {
+        display: flex;
+        justify-content: space-between;
+        margin: 50px;
+    }
 
-	.cards {
-		display: flex;
-		justify-content: space-evenly;
-	}
+    .information {
+        border: 2px black;
+        border-style: solid;
+        border-radius: 10px;
+        flex: 2;
+        display: flex;
+        flex-direction: column;
+        padding: 15px;
+    }
+
+    .cards {
+        display: flex;
+        justify-content: space-evenly;
+    }
 
 
-	.edit-profile {
-		position: absolute;
-		float: right;
-	}
+    .edit-profile {
+        position: absolute;
+        float: right;
+    }
 
 </style>

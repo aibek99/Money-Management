@@ -7,7 +7,7 @@ export interface Filter {
     from: null | number,
     to: null | number
   },
-  tags: Tag[],
+  tags: string[],
   date: {
     from: null | Date,
     to: null | Date
@@ -20,9 +20,9 @@ export interface Transaction {
   // TODO REMOVE STRING
   type: TransType | string;
   amount: number;
+  tags: Tag[];
+  date: Date;
   author: number;
-  tags: string[];
-  date: string;
   description: string;
 }
 
@@ -38,24 +38,15 @@ export interface dateType {
 
 export type TransType = 'income' | 'expense';
 
-// TODO Catch tags from db
-
-export const Tags: string[] = [];
+export const Tags: Tag[] = [];
 
 async function getTagsData() {
   const data = await _.getAllTags();
   if (data) {
     data.forEach((tag: TagData) => {
-      Tags.push(tag.name);
+      Tags.push(tag);
     });
   }
 }
 
 await getTagsData();
-
-
-
-// sadfioirjgoseijvsifd idk how to solve it
-// export type Tags = typeof tags[number];
-// const tt: Tags[] = ['Personal', 'Foods', 'war'];
-// export type Tags = ['Personal' | 'Food' | 'Clothes' | 'University' | 'Other' | 'Job' | 'Household' | 'Games' | 'Entertainment'];

@@ -1,7 +1,9 @@
 <script lang="ts">
   import { splitDate, toDate} from "../transactions/date";
+  import type {dateType} from "../types";
+  import type {SvelteHTMLElements} from "svelte/elements";
 
-  export let date;
+  export let date: dateType = {from: null, to: null};
   export let changeBalance;
   export let button = "none";
   let formattedFrom = splitDate(date.from);
@@ -38,7 +40,7 @@
     formattedTo = splitDate(date.to);
   }
 
-  function handleChange(type, event) {
+  function handleChange(type: 'from' | 'to', event: SvelteHTMLElements) {
     let value = event.target.value;
     if (type == 'from')
       date.from = toDate(value);
