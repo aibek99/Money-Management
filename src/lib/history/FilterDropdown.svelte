@@ -1,18 +1,17 @@
 <script lang="ts">
   import { createEventDispatcher } from "svelte";
-  import type { Filter } from "../types";
+  import type { Filter, Tag, TransType } from "../types";
   import { Tags } from "../types";
-  import CustomInput from "./CustomInput.svelte";
-  import { isDate } from "../transactions/date";
+  import { toDate } from "../transactions/date";
+  import type { SvelteHTMLElements } from "svelte/elements";
 
   export let filter: Filter;
-  export let visible = false;
-  let errorAmount = false;
-  let errorDate = false;
+  let formattedFrom = '';
+  let formattedTo = '';
 
   const dispatch = createEventDispatcher();
 
-  function typeClick(type) {
+  function typeClick(type: TransType) {
     if (filter.type != null)
       filter.type = filter.type === type ? null : type;
     else
@@ -20,94 +19,83 @@
     dispatch("change", filter);
   }
 
-  function tagClick(tag) {
+  function tagClick(tag: Tag) {
     const tags = [...filter.tags];
-    if (tags.includes(tag))
-      tags.splice(tags.indexOf(tag), 1);
+    if (tags.includes(tag.name))
+      tags.splice(tags.indexOf(tag.name), 1);
     else
-      tags.push(tag);
+      tags.push(tag.name);
     filter.tags = tags;
     dispatch("change", filter);
   }
 
-  function amountClick(type, value) {
-    if (type == 'From')
+  function amountClick(type : 'from' | 'to', event: SvelteHTMLElements) {
+    let value = event.target.value;
+    if (type == "from")
       filter.amount.from = value == "" ? null : value;
-    else if (type == 'To')
+    else if (type == "to")
       filter.amount.to = value == "" ? null : value;
-    errorAmount = false;
-    errorAmount = (filter.amount.to < 0 || filter.amount.from < 0 ||
-      (filter.amount.to < filter.amount.from && filter.amount.to != null && filter.amount.from != null));
-    if (errorAmount)
-      filter.amount.from = filter.amount.to = null;
     dispatch("change", filter);
   }
 
-  function dateClick(type, value) {
-    if (type == 'From')
-      filter.date.from = value == "" ? null : value;
-    else if (type == 'To')
-      filter.date.to = value == "" ? null : value;
-    errorDate = false;
-    if (filter.date.from != null)
-      errorDate = !isDate(filter.date.from);
-    if (!errorDate && filter.date.to != null)
-      errorDate = !isDate(filter.date.to);
-    if (errorDate)
-      filter.date.from = filter.date.to = null;
+  function dateClick(type: 'from' | 'to', event: SvelteHTMLElements) {
+    let value = event.target.value;
+    if (type == "from") {
+      filter.date.from = toDate(value);
+      formattedFrom = value;
+    } else if (type == "to") {
+      filter.date.to = toDate(value);
+      formattedTo = value;
+    }
     dispatch("change", filter);
   }
-
 </script>
 
-{#if visible}
-  <div class="filter-dropdown">
-    <table>
-      <tr>
-        <th>Type</th>
-        <td>
-          <button class="type income" class:active={filter.type === 'income'} on:click={() => typeClick('income')}>
-            income
-          </button>
-          <button class="type expense" class:active={filter.type === 'expense'} on:click={() => typeClick('expense')}>
-            expense
-          </button>
-        </td>
-      </tr>
-      <tr>
-        <th>Amount</th>
-        <td>
-          <div class="range-input">
-            <CustomInput label="From" type="number" onChange={amountClick} error={errorAmount}/>
-            <span>-</span>
-            <CustomInput label="To" type="number" onChange={amountClick} error={errorAmount}/>
-          </div>
-        </td>
-      </tr>
-      <tr>
-        <th>Tags</th>
-        <td>
-          {#each Tags as tag}
-            <button class="tag" class:active={filter.tags.includes(tag)} on:click={() => tagClick(tag)}>{tag}</button>
-          {/each}
-        </td>
-      </tr>
-      <tr>
-        <th>
-          <div>Date</div>
-          <div class="rules">mm.dd.yyyy</div>
-        </th>
-        <td>
-          <div class="range-input">
-            <CustomInput label="From" type="text" onChange={dateClick} error={errorDate} />
-            <span>-</span>
-            <CustomInput label="To" type="text" onChange={dateClick} error={errorDate}/>
-          </div>
-        </td>
-      </tr>
-    </table>
-  </div>
-{/if}
+<div class="filter-dropdown">
+  <table>
+    <tr>
+      <th>Type</th>
+      <td>
+        <button class="type income" class:active={filter.type === 'income'} on:click={() => typeClick('income')}>
+          income
+        </button>
+        <button class="type expense" class:active={filter.type === 'expense'} on:click={() => typeClick('expense')}>
+          expense
+        </button>
+      </td>
+    </tr>
+    <tr>
+      <th>Amount</th>
+      <td>
+        <div class="range-input">
+          <input type="number" on:input={() => amountClick('from', event)} bind:value={filter.amount.from}>
+          <span>-</span>
+          <input type="number" on:input={() => amountClick('to', event)} bind:value={filter.amount.to}>
+        </div>
+      </td>
+    </tr>
+    <tr>
+      <th>Tags</th>
+      <td>
+        {#each Tags as tag}
+          <button class="tag" class:active={filter.tags.includes(tag.name)} on:click={() => tagClick(tag)}>{tag.name}</button>
+        {/each}
+      </td>
+    </tr>
+    <tr>
+      <th>
+        <div>Date</div>
+      </th>
+      <td>
+        <div class="range-input">
+          <input type="date" on:change={() => dateClick("from", event)} bind:value={formattedFrom}>
+          <span>-</span>
+          <input type="date" on:change={() => dateClick("to", event)} bind:value={formattedTo}>
+        </div>
+      </td>
+    </tr>
+  </table>
+</div>
 
 <style>
     .filter-dropdown {
@@ -146,11 +134,26 @@
     }
 
     .expense {
-        color: darkred;
+        color: red;
     }
 
-    .rules {
-        font-size: 10px;
-        color: gray;
+    input {
+        all: unset;
+        border-radius: 10px;
+        background-color: #444444;
+        padding: 3px;
+        margin: 2px;
+        width: 120px;
+    }
+
+    input::-webkit-outer-spin-button,
+    input::-webkit-inner-spin-button {
+        -webkit-appearance: none;
+        margin: 0;
+    }
+
+    input[type=number] {
+        appearance: textfield;
+        -moz-appearance: textfield;
     }
 </style>

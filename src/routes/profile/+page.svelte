@@ -1,102 +1,162 @@
 <script lang="ts">
-  import Chart from '$lib/charts/pie.svelte'; 
-  import Line from '$lib/charts/line.svelte';     
-	import Balance from "../../lib/transactions/Balance.svelte";
+	import Balance from "../../lib/profile/Balance.svelte";
+	import Income from "../../lib/profile/Income.svelte";
+	import Expense from "../../lib/profile/Expense.svelte";
+	import Chart from '../../lib/charts/pie.svelte';
+	import Line from '../../lib/charts/line.svelte';
+	import _ from '../../lib/APIHandler/fetchApi';
+	import { onMount } from 'svelte';
+	import type {responseUser, userData} from '../../lib/APIHandler/types';
+	import type { Transaction } from "../../lib/types";
 
-	let name: string = '';
-	let surname: string = '';
-	let email: string = '';
-	let username: string = '';
+	import { transactions } from "../../lib/transactions/getTransactions";
+	import { splitDate } from "$lib/transactions/date";
+
+	let name = 'DefaultName';
+	let surname = 'DefaultSurname';
+	let email = 'Default@mail.ru';
+
+	let data: userData | null;
+
+	let show_transactions: Transaction[] = transactions;
+
+	const transactionDates = show_transactions.map((transaction) => splitDate(transaction.date));
+	const transactionAmounts = show_transactions.map((transaction) => transaction.amount);
+
+	onMount(async () => {
+		const response: responseUser = await _.getUser();
+
+		if (response.success) {
+			data = response.data;
+			if (data){
+				name = data.first_name;
+				surname = data.last_name;
+				email = data.email;
+			}
+			
+		} else {
+			console.log("Not Loaded")
+		}
+	});
+
+	interface TagTotal {
+		income: number;
+		expense: number;
+		}
+
+		interface TagTotals {
+		[tagName: string]: TagTotal;
+		}
+
+		const tagTotals: TagTotals = transactions.reduce((acc: TagTotals, transaction) => {
+		transaction.tags.forEach((tagName) => {
+			const existingTagTotal = acc[tagName.name] || { income: 0, expense: 0 };
+			if (transaction.type === "income") {
+			existingTagTotal.income += transaction.amount;
+			} else {
+			existingTagTotal.expense += transaction.amount;
+			}
+			acc[tagName.name] = existingTagTotal;
+		});
+		return acc;
+		}, {});
+
+		const incomeTagNames: string[] = [];
+		const incomeAmounts: number[] = [];
+		const expenseTagNames: string[] = [];
+		const expenseAmounts: number[] = [];
+
+		for (const tagName in tagTotals) {
+		const tagTotal = tagTotals[tagName];
+		if (tagTotal.income > 0) {
+			incomeTagNames.push(tagName);
+			incomeAmounts.push(tagTotal.income);
+		}
+		if (tagTotal.expense > 0) {
+			expenseTagNames.push(tagName);
+			expenseAmounts.push(tagTotal.expense);
+		}
+	}
+	
+
+
+
+
+	
 
 </script>
 
 <svelte:head>
-	<title>Profile</title>
+    <title>Profile</title>
 </svelte:head>
 
 <div>
 	<div class="profile-page">
 		<div class="information">
-			<p>Name: {name}</p>
-			<p>Surname: {surname}</p>
-			<p>Username: {username}</p>
+			<p>Hi {name} {surname}</p>
 			<p>email: {email}</p>
-			<button>edit</button>
+			<p>What did you spend this time</p>
+			<button class="edit-profile"><i class="fa-solid fa-gears"></i></button>
 		</div>
 	</div>
 	<div class="cards">
-		<div class="balance-card">
-			<Balance/>
-		</div>
-		<div class="income-card">
-
-		</div>
-		<div class="expense-card">
+			<Balance />
+			<Income />
+			<Expense />
+  </div>
+	<div class="pie-charts">
+		<Chart numbers={incomeAmounts} names={incomeTagNames} type="income" />
+		<Chart numbers={expenseAmounts} names={expenseTagNames} type="expense"/>
+	</div>
 
   <div class="charts">
-    <Chart numbers={[300, 50, 100, 40, 120]} names={['Red', 'Green', 'Yellow', 'Grey', 'Dark Grey']} />
-    <Line names={['January', 'February', 'March', 'April', 'May', 'June', 'July']} numbers={[12, 19, 3, 5, 2, 3, 8]} />
-  </div>
-		</div>
-	</div>
-	<div>
-		<div class="add-transaction">
-
-		</div>
-		<div class="history-transactions">
-
-
-		</div>
+	
+	
+    <Line names={transactionDates} numbers={transactionAmounts}/>
 	</div>
 </div>
 
 <style>
-  button {
-    width: 40%
-  }
+    .profile-wrapper {
+        font-family: Kanit, sans-serif;
+    }
 
-  .profilePage{
-    display: flex;
-    justify-content: space-between;
-    margin: 50px;
-  }
 
-  .information {
-    height: 300px;
-    border: 2px black;
-    border-style: solid;
-    border-radius: 10px;
-    flex: 2;
-    display: flex;
-    flex-direction: column;
-    padding: 15px;
-  }
+    .profile-page {
+        display: flex;
+        justify-content: space-between;
+        margin: 50px;
+    }
+
+    .information {
+        border: 1px solid white;
+        border-radius: 10px;
+        background: linear-gradient(to bottom right, #444444, black);
+        flex: 2;
+        display: flex;
+        flex-direction: column;
+        padding: 15px;
+        font-size: 20px;
+        line-height: 8px;
+    }
 
   .charts {
-    flex: 4
+    flex: 2;
+	margin: 20px;
   } 
+  .pie-charts{
+	justify-content: space-evenly;
+	display: flex;
+	margin-top: 50px;
+  }
   
 	button {
-		width: 40%;
+		all: unset;
 	}
 
-	.profile-page {
-		display: flex;
-		justify-content: space-between;
-		margin: 50px;
-	}
+    .cards {
+        display: flex;
+        justify-content: space-evenly;
+    }
 
-	.information {
-		border: 2px black;
-		border-style: solid;
-		border-radius: 10px;
-		flex: 2;
-		display: flex;
-		flex-direction: column;
-		padding: 15px;
-	}
-
-	.charts {
-		flex: 4;
-	}
 </style>
