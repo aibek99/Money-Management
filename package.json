@@ -13,7 +13,6 @@
 	},
 	"devDependencies": {
 		"@sveltejs/adapter-node": "^1.2.3",
-		"@sveltejs/adapter-vercel": "^2.4.2",
 		"@sveltejs/kit": "^1.5.0",
 		"@types/better-sqlite3": "^7.6.3",
 		"@typescript-eslint/eslint-plugin": "^5.45.0",
