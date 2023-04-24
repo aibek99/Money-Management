@@ -4,7 +4,7 @@ export interface Filter {
     from: null | number,
     to: null | number
   },
-  tags: Tag[],
+  tags: string[],
   date: {
     from: null | Date,
     to: null | Date
@@ -18,7 +18,7 @@ export interface Transaction {
   type: TransType | string;
   amount: number;
   tags: Tag[];
-  date: string;
+  date: Date;
   description: string;
 }
 
@@ -35,8 +35,4 @@ export interface dateType {
 export type TransType = 'income' | 'expense';
 
 // TODO Catch tags from db
-export const Tags = ['Personal', 'Food', 'Clothes', 'University', 'Other', 'Job', 'Household', 'Games', 'Entertainment'];
-// sadfioirjgoseijvsifd idk how to solve it
-// export type Tags = typeof tags[number];
-// const tt: Tags[] = ['Personal', 'Foods', 'war'];
-// export type Tags = ['Personal' | 'Food' | 'Clothes' | 'University' | 'Other' | 'Job' | 'Household' | 'Games' | 'Entertainment'];
+export const Tags: Tag[] = [{id: 1, name: 'Personal'}, {id: 1, name: 'Food'}, {id: 1, name: 'Clothes'}, {id: 1, name: 'University'}, {id: 1, name: 'Other'}, {id: 1, name: 'Job'}, {id: 1, name: 'Household'}, {id: 1, name: 'Games'}, {id: 1, name: 'Entertainment'}];

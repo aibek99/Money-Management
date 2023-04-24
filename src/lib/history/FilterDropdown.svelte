@@ -1,9 +1,9 @@
 <script lang="ts">
   import { createEventDispatcher } from "svelte";
-  import type { Filter, TransType } from "../types";
+  import type { Filter, Tag, TransType } from "../types";
   import { Tags } from "../types";
   import { toDate } from "../transactions/date";
-  import type { HTMLInputAttributes, HTMLInputTypeAttribute, SvelteHTMLElements } from "svelte/elements";
+  import type { SvelteHTMLElements } from "svelte/elements";
 
   export let filter: Filter;
   let formattedFrom = '';
@@ -19,12 +19,12 @@
     dispatch("change", filter);
   }
 
-  function tagClick(tag: string) {
+  function tagClick(tag: Tag) {
     const tags = [...filter.tags];
-    if (tags.some(e => e.name == tag))
-      tags.splice(tags.findIndex(e => e.name == tag), 1);
+    if (tags.includes(tag.name))
+      tags.splice(tags.indexOf(tag.name), 1);
     else
-      tags.push(tag);
+      tags.push(tag.name);
     filter.tags = tags;
     dispatch("change", filter);
   }
@@ -38,7 +38,7 @@
     dispatch("change", filter);
   }
 
-  function dateClick(type, event) {
+  function dateClick(type: 'from' | 'to', event: SvelteHTMLElements) {
     let value = event.target.value;
     if (type == "from") {
       filter.date.from = toDate(value);
@@ -49,7 +49,6 @@
     }
     dispatch("change", filter);
   }
-
 </script>
 
 <div class="filter-dropdown">
@@ -79,7 +78,7 @@
       <th>Tags</th>
       <td>
         {#each Tags as tag}
-          <button class="tag" class:active={filter.tags.includes(tag)} on:click={() => tagClick(tag)}>{tag}</button>
+          <button class="tag" class:active={filter.tags.includes(tag.name)} on:click={() => tagClick(tag)}>{tag.name}</button>
         {/each}
       </td>
     </tr>
@@ -89,9 +88,9 @@
       </th>
       <td>
         <div class="range-input">
-          <input type="date" on:change={() => dateClick('from', event)} bind:value={formattedFrom}>
+          <input type="date" on:change={() => dateClick("from", event)} bind:value={formattedFrom}>
           <span>-</span>
-          <input type="date" on:change={() => dateClick('to', event)} bind:value={formattedTo}>
+          <input type="date" on:change={() => dateClick("to", event)} bind:value={formattedTo}>
         </div>
       </td>
     </tr>

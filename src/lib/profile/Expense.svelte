@@ -1,6 +1,5 @@
 <script lang="ts">
   import { transactions } from "../transactions/getTransactions";
-  import { toDate } from "../transactions/date";
   import type { dateType, Transaction } from "../types";
   import BalanceFilterDropdown from "./DateFilterDropdown.svelte";
 
@@ -13,9 +12,9 @@
   function changeBalance() {
     balance = 0;
     for (const transaction: Transaction of transactions) {
-      if ((toDate(transaction.date) >= date.from && toDate(transaction.date) <= date.to)
-        || (date.to == null && date.from == null) || (toDate(transaction.date) >= date.from && date.to == null)
-        || (toDate(transaction.date) <= date.to && date.from == null)) {
+      if ((transaction.date >= date.from && transaction.date <= date.to)
+        || (date.to == null && date.from == null) || (transaction.date >= date.from && date.to == null)
+        || (transaction.date <= date.to && date.from == null)) {
         if (transaction.type == "expense")
           balance += transaction.amount;
       }
