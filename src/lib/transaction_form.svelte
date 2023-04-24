@@ -17,7 +17,7 @@
 
 	onMount(() => {
 		// Set the default datetime value to the current date and time
-		datetime = new Date().toISOString().slice(0, 16);
+		datetime = new Date().toISOString().slice(0, 10);
 	});
 
 	
@@ -84,7 +84,8 @@
 		<input type="text" bind:value={title} placeholder="title of transaction" required /> <br />
 		<label for="amount">Amount:</label> <br />
 		<input type="number" bind:value={amount} placeholder="amount money" required /> <br />
-		<b>Type:</b> <br />
+		<label for="type">Type</label>
+		<br />
 
 		<button type="button" class="type income" class:active={type === 'income'} on:click={() => typeClick('income')}>
             income
@@ -93,7 +94,7 @@
             expense
           </button>
 		<br>
-		<b>Tags</b>
+		<label for="tags">Tags</label>
 		<br>
 		{#each Tags as tag}
             <button type="button" class="tag" class:active={tags.includes(tag)} on:click={() => tagClick(tag)}>{tag}</button>
@@ -102,29 +103,31 @@
 		<br>
 		<label for="DateTime">Date and time:</label> 
 		<br>
-		<input type="datetime-local" bind:value={datetime} on:change={handleDatetimeChange} />
+		<input type="date" bind:value={datetime} on:change={handleDatetimeChange} />
 		<br>
 
 		<label for="description">Description</label>  
 		<input type="text" bind:value={description} placeholder="Description of transaction">
-		<input type="submit" />
+		<input type="submit"  />
 	</form>
 
 </div>
 <style>
 	.form-wrapper {
-		width: 40%;
 		border-radius: 5px;
 		background-color: #3d3b3b;
-		padding: 3%;
+		padding: 5%;
+        font-family: 'Roboto', sans-serif;
 	}
 
 	label {
+        font-family: 'Roboto', sans-serif;
 		color: white;
 	}
 
 	input[type='text'],
-	input[type='number'] {
+	input[type='number'],
+	input[type='date'] {
 		width: 100%;
 		padding: 12px 20px;
 		margin: 8px 0;
@@ -133,6 +136,12 @@
 		border-radius: 4px;
 		box-sizing: border-box;
 	}
+
+	input[type="number"]::-webkit-inner-spin-button,
+	input[type="number"]::-webkit-outer-spin-button {
+		-webkit-appearance: none;
+		margin: 0;
+		}
 
 	input[type='submit'] {
 		width: 100%;

@@ -16,13 +16,7 @@
 		<a href="/" class="header-link">Home</a>
 		<a href="/profile" class="header-link">Profile</a>
 		<div class="header-dropdown" on:click={toggleDropdown}>
-			<span class="header-link">Transactions</span>
-			{#if dropdownOpen}
-				<div class="header-dropdown-menu">
-					<a href="/add" class="header-dropdown-link">Add</a>
-					<a href="/history" class="header-dropdown-link">History</a>
-				</div>
-			{/if}
+			<span > <a href="/history" class="header-link">  Transactions </a></span>
 		</div>
 		<a href="/about" class="header-link">About</a>
 	</nav>

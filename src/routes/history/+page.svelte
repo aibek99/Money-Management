@@ -4,6 +4,7 @@
   import FilterDropdown from "../../lib/history/FilterDropdown.svelte";
   import type { Filter, Transaction } from "../../lib/types";
   import { toDate } from "../../lib/transactions/date";
+	import TransactionForm from '$lib/transaction_form.svelte';
 
   let show_transactions: Transaction[] = transactions;
 
@@ -68,6 +69,10 @@
   <title>History</title>
 </svelte:head>
 
+<div class="transactions">
+  <div class="wrapper-form">
+    <TransactionForm />
+  </div>
 <div class="container">
   <div class="table-filter-wrapper">
     <strong>History of transactions</strong>
@@ -105,8 +110,22 @@
     </tbody>
   </table>
 </div>
-
+</div>
 <style>
+
+    .transactions {
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+    }
+
+    .wrapper-form{
+      margin-left: 50px;
+      margin-top: 65px;
+      margin-right: 30px;
+      flex: 1;
+    }
+
     button {
         all: unset;
     }
@@ -115,6 +134,9 @@
         background-color: #121212;
         color: white;
         font-family: 'Roboto', sans-serif;
+        margin: 25px;
+        border-radius: 5px;
+        flex: 3;
     }
 
     .table-filter-wrapper {
@@ -168,5 +190,10 @@
     .description {
         font-size: 15px;
         color: gray;
+    }
+
+    a{
+      all: unset;
+      cursor: pointer;
     }
 </style>

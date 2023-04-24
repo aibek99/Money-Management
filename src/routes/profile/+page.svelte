@@ -47,12 +47,6 @@
     width: 40%
   }
 
-  .profilePage{
-    display: flex;
-    justify-content: space-between;
-    margin: 50px;
-  }
-
   .information {
     height: 300px;
     border: 2px black;
