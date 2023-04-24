@@ -5,13 +5,13 @@ interface Tag {
     name: string;
 }
 
-export interface Transaction {
+export interface TransactionData {
     id: number;
     title: string;
     amount: number;
     author: number;
     description: string;
-    transaction_type: string;
+    transaction_type: "income" | "expense";
     datetime: string;
     tag: Tag[] | [];
 }
@@ -24,7 +24,7 @@ export interface PTransaction {
     title: string;
     amount: number;
     description: string;
-    transaction_type: string;
+    transaction_type: "income" | "expense";
     datetime: string;
     tag: pTag[] | [];
 }
@@ -32,12 +32,12 @@ export interface PTransaction {
 
 export interface responseTransaction {
     success: boolean;
-    data: Transaction | null;
+    data: TransactionData | null;
 }
 
 export interface responseAllTransaction {
     success: boolean;
-    data: Transaction[] | null;
+    data: TransactionData[] | null;
 }
 
 export interface userData{
@@ -51,3 +51,9 @@ export interface responseUser {
     success: boolean;
     data: userData | null;
 }
+
+export interface TagData {
+    id: number;
+    name: string;
+}
+
