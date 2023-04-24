@@ -2,13 +2,18 @@
 	import Balance from "../../lib/profile/Balance.svelte";
 	import Income from "../../lib/profile/Income.svelte";
 	import Expense from "../../lib/profile/Expense.svelte";
-  import Chart from '../../lib/charts/pie.svelte';
-  import Line from '../../lib/charts/line.svelte';
+	import Chart from '$lib/charts/pie.svelte'; 
+	import Line from '$lib/charts/line.svelte';     
+	import _ from '../../lib/APIHandler/fetchApi';
 
 	let name = 'DefaultName';
 	let surname = 'DefaultSurname';
 	let email = 'Default@mail.ru';
 	let username = 'DefaultUsername';
+
+	let data: any = _.getUser();
+
+	console.log(data)
 
 </script>
 
