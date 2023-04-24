@@ -1,14 +1,16 @@
 <script lang="ts">
+	import Balance from "../../lib/profile/Balance.svelte";
+	import Income from "../../lib/profile/Income.svelte";
+	import Expense from "../../lib/profile/Expense.svelte";
   import Chart from '$lib/charts/pie.svelte'; 
   import Line from '$lib/charts/line.svelte';     
-  import Balance from "../../lib/transactions/Balance.svelte";
   import _ from "../../lib/transactions/fetchApi";
 
 
-	let name: string = '';
-	let surname: string = '';
-	let email: string = '';
-	let username: string = '';
+	let name = 'DefaultName';
+	let surname = 'DefaultSurname';
+	let email = 'Default@mail.ru';
+	let username = 'DefaultUsername';
 
 	_.getAllTransactions();
 
@@ -24,36 +26,21 @@
 <div>
 	<div class="profile-page">
 		<div class="information">
-			<p>Name: {name}</p>
-			<p>Surname: {surname}</p>
+			<p>Hi {name} {surname}</p>
 			<p>Username: {username}</p>
 			<p>email: {email}</p>
-			<button>Edit</button>
+			<p>What did you spend this time</p>
+			<button class="edit-profile"><i class="fa-solid fa-gears"></i></button>
 		</div>
 	</div>
 	<div class="cards">
-		<div class="balance-card">
-			<Balance/>
-		</div>
-		<div class="income-card">
-
-		</div>
-		<div class="expense-card">
-
+			<Balance class="card"/>
+			<Income class="card"/>
+			<Expense class="card"/>
+  </div>
   <div class="charts">
     <Chart numbers={[300, 50, 100, 40, 120]} names={['Red', 'Green', 'Yellow', 'Grey', 'Dark Grey']} />
     <Line names={['January', 'February', 'March', 'April', 'May', 'June', 'July']} numbers={[12, 19, 3, 5, 2, 3, 8]} />
-  </div>
-		</div>
-	</div>
-	<div>
-		<div class="add-transaction">
-
-		</div>
-		<div class="history-transactions">
-
-
-		</div>
 	</div>
 </div>
 
@@ -84,7 +71,7 @@
   } 
   
 	button {
-		width: 40%;
+		all: unset;
 	}
 
 	.profile-page {
@@ -103,7 +90,15 @@
 		padding: 15px;
 	}
 
-	.charts {
-		flex: 4;
+	.cards {
+		display: flex;
+		justify-content: space-evenly;
 	}
+
+
+	.edit-profile {
+		position: absolute;
+		float: right;
+	}
+
 </style>
