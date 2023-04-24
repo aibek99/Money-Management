@@ -1,17 +1,34 @@
 <script lang="ts">
-    import Balance from "../../lib/profile/Balance.svelte";
-    import Income from "../../lib/profile/Income.svelte";
-    import Expense from "../../lib/profile/Expense.svelte";
-    import Chart from '../../lib/charts/pie.svelte';
-    import Line from '../../lib/charts/line.svelte';
-    import _ from '../../lib/APIHandler/fetchApi';
+	import Balance from "../../lib/profile/Balance.svelte";
+	import Income from "../../lib/profile/Income.svelte";
+	import Expense from "../../lib/profile/Expense.svelte";
+	import Chart from '$lib/charts/pie.svelte'; 
+	import Line from '$lib/charts/line.svelte';     
+	import _ from '../../lib/APIHandler/fetchApi';
+	import { onMount } from 'svelte';
+	import type {responseUser, userData} from '../../lib/APIHandler/types'; 
 
-    let name = 'DefaultName';
-    let surname = 'DefaultSurname';
-    let email = 'Default@mail.ru';
-    let username = 'DefaultUsername';
+	let name = 'DefaultName';
+	let surname = 'DefaultSurname';
+	let email = 'Default@mail.ru';
 
-    let data: any = _.getUser();
+	let data: userData | null;
+
+	onMount(async () => {
+		const response: responseUser = await _.getUser();
+
+		if (response.success) {
+			data = response.data;
+			if (data){
+				name = data.first_name;
+				surname = data.last_name;
+				email = data.email;
+			}
+			
+		} else {
+			console.log("Not Loaded")
+		}
+	});
 
 </script>
 

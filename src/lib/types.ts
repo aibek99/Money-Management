@@ -1,3 +1,6 @@
+import _ from "./APIHandler/fetchApi";
+import type {TagData} from "./APIHandler/types";
+
 export interface Filter {
   type: "income" | "expense" | null,
   amount: {
@@ -19,6 +22,7 @@ export interface Transaction {
   amount: number;
   tags: Tag[];
   date: Date;
+  author: number;
   description: string;
 }
 
@@ -34,5 +38,15 @@ export interface dateType {
 
 export type TransType = 'income' | 'expense';
 
-// TODO Catch tags from db
-export const Tags: Tag[] = [{id: 1, name: 'Personal'}, {id: 1, name: 'Food'}, {id: 1, name: 'Clothes'}, {id: 1, name: 'University'}, {id: 1, name: 'Other'}, {id: 1, name: 'Job'}, {id: 1, name: 'Household'}, {id: 1, name: 'Games'}, {id: 1, name: 'Entertainment'}];
+export const Tags: string[] = [];
+
+async function getTagsData() {
+  const data = await _.getAllTags();
+  if (data) {
+    data.forEach((tag: TagData) => {
+      Tags.push(tag.name);
+    });
+  }
+}
+
+await getTagsData();
