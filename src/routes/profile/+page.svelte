@@ -2,8 +2,8 @@
 	import Balance from "../../lib/profile/Balance.svelte";
 	import Income from "../../lib/profile/Income.svelte";
 	import Expense from "../../lib/profile/Expense.svelte";
-	import Chart from '$lib/charts/pie.svelte'; 
-	import Line from '$lib/charts/line.svelte';     
+	import Chart from '../../lib/charts/pie.svelte';
+	import Line from '../../lib/charts/line.svelte';
 	import _ from '../../lib/APIHandler/fetchApi';
 	import { onMount } from 'svelte';
 	import type {responseUser, userData} from '../../lib/APIHandler/types'; 
@@ -40,7 +40,6 @@
     <div class="profile-page">
         <div class="information">
             <p>Hi {name} {surname}</p>
-            <p>Username: {username}</p>
             <p>email: {email}</p>
             <p>What did you spend this time</p>
             <button class="edit-profile"><i class="fa-solid fa-gears"></i></button>
