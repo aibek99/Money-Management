@@ -38,13 +38,13 @@ export interface dateType {
 
 export type TransType = 'income' | 'expense';
 
-export const Tags: string[] = [];
+export const Tags: Tag[] = [];
 
 async function getTagsData() {
   const data = await _.getAllTags();
   if (data) {
     data.forEach((tag: TagData) => {
-      Tags.push(tag.name);
+      Tags.push(tag);
     });
   }
 }

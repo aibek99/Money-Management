@@ -2,6 +2,7 @@ import type { Transaction } from "../types";
 
 import type { TransactionData } from "../APIHandler/types";
 import _ from "../APIHandler/fetchApi";
+import {toDate} from "./date";
 
 let transactions_json: TransactionData[] = [];
 
@@ -18,7 +19,7 @@ export const transactions: Transaction[] = [];
 
 for (const transaction of transactions_json) {
 
-	const tagNames = transaction.tag.map((tag) => tag.name);
+	// const tagNames = transaction.tag.map((tag) => tag.name);
 
 	transactions.push({
 		id: transaction.id,
@@ -26,8 +27,8 @@ for (const transaction of transactions_json) {
 		type: transaction.transaction_type,
 		author: transaction.author,
 		amount: transaction.amount,
-		tags: tagNames,
-		date: transaction.datetime.slice(0, 10),
+		tags: transaction.tag,
+		date: toDate(transaction.datetime.slice(0, 10)),
 		description: transaction.description
 	})
 }
