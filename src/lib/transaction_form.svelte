@@ -1,12 +1,25 @@
 <script lang="ts">
-	import { createEventDispatcher } from "svelte";
+	import { createEventDispatcher, onMount } from "svelte";
 	import { Tags } from "./types";
+	import _ from "./APIHandler/fetchApi";
+
 
 	let title: string = '';
 	let amount: number = 0;
-	let tags : string[] = [];
-	let type : string = "income"
-	let description : string = ""
+	let tags: string[] = [];
+	let type: string = "income";
+	let description: string = ""
+	let datetime: string = '';
+
+	function handleDatetimeChange(event: Event) {
+		datetime = (event.target as HTMLInputElement).value;
+	}
+
+	onMount(() => {
+		// Set the default datetime value to the current date and time
+		datetime = new Date().toISOString().slice(0, 16);
+	});
+
 	
 	const dispatch = createEventDispatcher();
 
@@ -22,31 +35,76 @@
 	function typeClick(typeChoosed : string) {
 		type = typeChoosed
 	}
+
+
+	function handleSubmit(event: Event) {
+
+		const tagList = tags.map((tag) => {
+			return { name: tag };
+		});
+
+		event.preventDefault();
+		const data = {
+			title: title,
+			amount: amount,
+			tag: tagList,
+			datetime: datetime,
+			transaction_type: type,
+			description: description
+			};
+
+		console.log(data);
+
+		const response: any = _.postTransaction(data);
+
+		if (response.success){
+			console.log(data);
+			const response: any = _.postTransaction(data);
+			if (response.success){
+				title = '';
+				amount = 0;
+				tags = [];
+				type = "income";
+				description = "";
+				datetime = new Date().toISOString().slice(0, 16);
+			}
+		}
+
+		// Clear form fields
+
+		
+	}
+
 	
 </script>
 
 <div class="form-wrapper">
-	<form action="">
+	<form on:submit={handleSubmit}>
 		<label for="Title">Title:</label> <br />
 		<input type="text" bind:value={title} placeholder="title of transaction" required /> <br />
 		<label for="amount">Amount:</label> <br />
 		<input type="number" bind:value={amount} placeholder="amount money" required /> <br />
 		<b>Type:</b> <br />
 
-		<button class="type income" class:active={type === 'income'} on:click={() => typeClick('income')}>
+		<button type="button" class="type income" class:active={type === 'income'} on:click={() => typeClick('income')}>
             income
           </button>
-          <button class="type expense" class:active={type === 'expense'} on:click={() => typeClick('expense')}>
+          <button type="button" class="type expense" class:active={type === 'expense'} on:click={() => typeClick('expense')}>
             expense
           </button>
 		<br>
 		<b>Tags</b>
 		<br>
 		{#each Tags as tag}
-            <button class="tag" class:active={tags.includes(tag)} on:click={() => tagClick(tag)}>{tag}</button>
+            <button type="button" class="tag" class:active={tags.includes(tag)} on:click={() => tagClick(tag)}>{tag}</button>
           {/each}
 		
 		<br>
+		<label for="DateTime">Date and time:</label> 
+		<br>
+		<input type="datetime-local" bind:value={datetime} on:change={handleDatetimeChange} />
+		<br>
+
 		<label for="description">Description</label>  
 		<input type="text" bind:value={description} placeholder="Description of transaction">
 		<input type="submit" />
