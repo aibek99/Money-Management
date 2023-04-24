@@ -2,8 +2,8 @@
 	import Balance from "../../lib/profile/Balance.svelte";
 	import Income from "../../lib/profile/Income.svelte";
 	import Expense from "../../lib/profile/Expense.svelte";
-  import Chart from '$lib/charts/pie.svelte'; 
-  import Line from '$lib/charts/line.svelte';     
+  import Chart from '../../lib/charts/pie.svelte';
+  import Line from '../../lib/charts/line.svelte';
 
 	let name = 'DefaultName';
 	let surname = 'DefaultSurname';
@@ -27,9 +27,9 @@
 		</div>
 	</div>
 	<div class="cards">
-			<Balance class="card"/>
-			<Income class="card"/>
-			<Expense class="card"/>
+			<Balance />
+			<Income />
+			<Expense />
   </div>
   <div class="charts">
     <Chart numbers={[300, 50, 100, 40, 120]} names={['Red', 'Green', 'Yellow', 'Grey', 'Dark Grey']} />
@@ -42,7 +42,7 @@
     width: 40%
   }
 
-  .profilePage{
+  .profile-page{
     display: flex;
     justify-content: space-between;
     margin: 50px;
@@ -50,9 +50,8 @@
 
   .information {
     height: 300px;
-    border: 2px black;
-    border-style: solid;
-    border-radius: 10px;
+		border: 2px solid black;
+		border-radius: 10px;
     flex: 2;
     display: flex;
     flex-direction: column;
