@@ -1,7 +1,4 @@
 <script>
-
-  export let label = "";
-  export let onChange;
   export let error = false;
   export let placeholder = '';
   export let date = new Date();
@@ -26,10 +23,6 @@
 </div>
 
 <style>
-    .input-wrapper {
-        /*width: 15rem;*/
-    }
-
     input {
         border-radius: 10px;
         background-color: #444444;
