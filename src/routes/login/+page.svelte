@@ -18,7 +18,6 @@
 
 <style>
 	.container {
-		background-color: skyblue;
 		background-size: cover;
 		color: #fff;
 		display: flex;
