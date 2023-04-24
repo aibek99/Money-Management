@@ -19,7 +19,7 @@ export function splitDate(a: Date | null): string {
 export function toDate(a: string): Date | null {
   if (a == "")
     console.log('aa');
-  console.log(a);
+  // console.log(a);
   const dateParts: string[] = a.split("-");
   const date: Date = new Date(
     Number(dateParts[0]),

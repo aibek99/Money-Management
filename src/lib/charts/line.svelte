@@ -12,7 +12,7 @@
         data: {
           labels: names,
           datasets: [{
-            label: 'Sales',
+            label: 'Transactions',
             data: numbers,
             fill: false,
             borderColor: 'rgb(75, 192, 192)',
