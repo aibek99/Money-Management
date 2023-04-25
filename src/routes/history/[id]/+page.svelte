@@ -4,16 +4,57 @@
     import _ from "$lib/APIHandler/fetchApi";
     import { splitDate } from "$lib/transactions/date"
     import type { responseTransaction } from '$lib/APIHandler/types';
+    import type { Tag } from '$lib/types'
 
     const id = Number($page.params.id)
 
-
+    let title : string;
+    let amount : number
+    let author : number
+    let description : string
+    let transaction_type : "income" | "expense"
+    let tags : Tag[] | []
     let showModal = false;
   
+
     function toggleModal() {
         showModal = !showModal;
     }
     let transaction : Promise<responseTransaction> = _.getTransaction(id)
+    
+    async function setValues(){
+      let response = await transaction
+      if (response.data){ 
+        title = response.data.title
+        amount = response.data.amount
+        author = response.data.author
+        description = response.data.description
+        transaction_type = response.data.transaction_type
+        tags = response.data.tag
+      }
+    }
+
+    function typeClick(typeChoosed : "income" | "expense") {
+      transaction_type = typeChoosed
+    }    
+
+    async function handleUpdate(event : Event) {
+      event.preventDefault();
+      
+		const data = {
+      id: id,
+			title: title,
+			amount: amount,
+			tag: tags,
+			datetime: (await transaction).data?.datetime,
+			transaction_type: transaction_type,
+			description: description
+			};
+      _.postTransaction(data)
+      toggleModal()
+    }
+
+    setValues()
 </script>
 
 <div class="item">
@@ -38,18 +79,109 @@
             </div>
           </div>
           <div class="buttons">
-            <button class="edit-btn" on:click={ () => toggleModal}>Edit</button>
+            <button class="edit-btn" on:click={toggleModal}>Edit</button>
             <a href="/history"> <button class="delete-btn" on:click={ () => _.deleteTransaction(id)}>  Delete </button>  <a>
           </div>
-
+          
           {#if showModal}
-            <Transaction />
+          <div class="modal">
+            <div class="modal-content">
+              <span class="close" on:click={toggleModal}>&times;</span>
+              <h2>Edit transaction</h2>
+              <form on:submit={handleUpdate}>
+                <label for="Title">Title:</label> <br />
+                <input type="text" bind:value={title} placeholder="title of transaction" required /> <br />
+                <label for="amount">Amount:</label> <br />
+                <input type="number" bind:value={amount} placeholder="amount money" required /> <br />
+                <label for="type">Type</label>
+                <br />
+
+                <button type="button" class="type income" class:active={transaction_type === 'income'} on:click={() => typeClick('income')}>
+                        income
+                      </button>
+                      <button type="button" class="type expense" class:active={transaction_type === 'expense'} on:click={() => typeClick('expense')}>
+                        expense
+                      </button>
+                <br>
+                <label for="tags">Tags</label>
+                <br>
+                {#each tags as tag}
+                        <button type="button" class="tag" class:active={tags.includes(tag.name)} on:click={() => tagClick(tag.name)}>{tag.name}</button>
+                      {/each}
+                
+                    <br>
+                <label for="description">Description</label>  
+                <input type="text" bind:value={description} placeholder="Description of transaction">
+                <input type="submit" />
+              </form>
+            
+            </div>
+          </div>
           {/if}
         {/if}
     {/await}
 </div>
 
 <style>
+
+input[type="number"]::-webkit-inner-spin-button,
+	input[type="number"]::-webkit-outer-spin-button {
+		-webkit-appearance: none;
+		margin: 0;
+		}
+    input[type='text'],
+	input[type='number'],
+	input[type='date'] {
+		width: 100%;
+		padding: 12px 20px;
+		margin: 8px 0;
+		display: inline-block;
+		border: 1px solid #4b4545;
+		border-radius: 4px;
+		box-sizing: border-box;
+	}
+.modal {
+    display: block;
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+  }
+
+  .modal-content {
+    display: block;
+    position: fixed;
+    z-index: 2;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    background-color: #484242;
+    padding: 20px;
+    border-radius: 5px;
+  }
+  button {
+        all: unset;
+        display: inline-block;
+        margin: 5px;
+        padding: 3px 8px;
+        border-radius: 5px;
+        font-size: 14px;
+        background-color: #555;
+        color: #fff;
+    }
+  .close {
+    position: absolute;
+    top: 0;
+    right: 0;
+    font-size: 28px;
+    font-weight: bold;
+    color: #aaa;
+    cursor: pointer;
+  }
+
 
 a{
   all : unset;
