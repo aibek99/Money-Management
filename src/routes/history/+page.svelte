@@ -4,6 +4,7 @@
   import FilterDropdown from "../../lib/history/FilterDropdown.svelte";
   import type { Filter, Transaction } from "../../lib/types";
   import {splitDate} from "../../lib/transactions/date.js";
+  import TransactionForm from '$lib/transaction_form.svelte';
 
   let show_transactions: Transaction[] = transactions;
 
@@ -68,47 +69,64 @@
   <title>History</title>
 </svelte:head>
 
-<div class="container">
-  <div class="table-filter-wrapper">
-    <strong>History of transactions</strong>
-    <div class="table-filter">
-      <button on:click={toggleFilter}>
-        <i class="fa-solid fa-filter-circle-dollar fa-xl"></i>
-      </button>
-      {#if filterOpen}
-        <FilterDropdown on:change={() => filterBy(filter)} filter={filter} />
-      {/if}
-    </div>
+<div class="transactions">
+  <div class="wrapper-form">
+    <TransactionForm />
   </div>
-  <table>
-    <thead>
-    <tr>
-      <TableHeader column="Name" {sort} {sortBy} />
-      <TableHeader column="Type" {sort} {sortBy} />
-      <TableHeader column="Amount" {sort} {sortBy} />
-      <TableHeader column="Date" {sort} {sortBy} />
-      <TableHeader column="Tags" />
-      <TableHeader column="Description" {sort} {sortBy} />
-    </tr>
-    </thead>
-    <tbody>
-    {#each show_transactions as transaction}
+  <div class="container">
+    <div class="table-filter-wrapper">
+      <strong>History of transactions</strong>
+      <div class="table-filter">
+        <button on:click={toggleFilter}>
+          <i class="fa-solid fa-filter-circle-dollar fa-xl"></i>
+        </button>
+        {#if filterOpen}
+          <FilterDropdown on:change={() => filterBy(filter)} filter={filter} />
+        {/if}
+      </div>
+    </div>
+    <table>
+      <thead>
       <tr>
-        <td><a href="/history/{transaction.name}"> {transaction.name} </a></td>
-        <td class={transaction.type}>{transaction.type}</td>
-        <td>{transaction.amount}</td>
-        <td>{splitDate(transaction.date)}</td>
-        <td>
-          {#each transaction.tags as tag}<span>{tag.name}</span>{/each}
-        </td>
-        <td class="description">{transaction.description}</td>
+        <TableHeader column="Name" {sort} {sortBy} />
+        <TableHeader column="Type" {sort} {sortBy} />
+        <TableHeader column="Amount" {sort} {sortBy} />
+        <TableHeader column="Date" {sort} {sortBy} />
+        <TableHeader column="Tags" />
+        <TableHeader column="Description" {sort} {sortBy} />
       </tr>
-    {/each}
-    </tbody>
-  </table>
+      </thead>
+      <tbody>
+      {#each show_transactions as transaction}
+        <tr>
+          <td><a href="/history/{transaction.id}"> {transaction.name} </a></td>
+          <td class={transaction.type}>{transaction.type}</td>
+          <td>{transaction.amount}</td>
+          <td>{splitDate(transaction.date)}</td>
+          <td>
+            {#each transaction.tags as tag}<span>{tag.name}</span>{/each}
+          </td>
+          <td class="description">{transaction.description}</td>
+        </tr>
+      {/each}
+      </tbody>
+    </table>
+  </div>
 </div>
-
 <style>
+
+    .transactions {
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+    }
+    .wrapper-form{
+      margin-left: 50px;
+      margin-top: 65px;
+      margin-right: 30px;
+      flex: 1;
+    }
+
     button {
         all: unset;
     }
@@ -117,6 +135,9 @@
         background-color: #121212;
         color: white;
         font-family: 'Roboto', sans-serif;
+        margin: 25px;
+        border-radius: 5px;
+        flex: 3;
     }
 
     .table-filter-wrapper {
@@ -171,4 +192,10 @@
         font-size: 15px;
         color: gray;
     }
+
+    a{
+      all: unset;
+      cursor: pointer;
+    }
+
 </style>

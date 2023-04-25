@@ -1,16 +1,52 @@
 <script lang="ts">
-	import type { ActionData } from './$types';
-	export let form: ActionData;
+	import { onMount } from 'svelte';
+	import Cookies from 'js-cookie';
+
+	let email = '';
+	let password = '';
+
+	async function handleLogin() {
+		const response = await fetch('https://shohjahonh.pythonanywhere.com/login/', {
+			method: 'POST',
+			headers: {
+				'Content-Type': 'application/json'
+			},
+			body: JSON.stringify({
+				email: email,
+				password: password
+			})
+		});
+
+		if (response.ok) {
+			const data = await response.json();
+			const token = data.token;
+
+			// console.log('Successful login');
+			// console.log(token);
+			Cookies.set('token', token, {expires: 1, secure: true});
+			window.location.href = '/profile';
+		} else {
+			alert('Invalid credentials');
+		}
+	}
+
+	onMount(() => {
+		const token = Cookies.get('token');
+		console.log(token);
+
+		if (token) {
+//			check.set(true);
+		} else {
+//			check.set(false);
+		}
+	});
 </script>
 
 <div class="container">
 	<h1>Login</h1>
-	<form method="post">
-		<input type="text" placeholder="Email" name="email" required />
-		<input type="password" placeholder="Password" name="password" required />
-		{#if form?.errorMessage}
-			<div class="has-text-danger">{form.errorMessage}</div>
-		{/if}
+	<form on:submit|preventDefault={handleLogin}>
+		<input type="email" bind:value={email} placeholder="Email" name="email" required />
+		<input type="password" bind:value={password} placeholder="Password" name="password" required />
 		<button class="is-primary" type="submit" formaction="?/login">Login</button>
 		<a href="/signup" class="ifthecase">If you don't have account, register new account!</a>
 	</form>
@@ -61,16 +97,8 @@
 	button:hover {
 		background-color: #0062cc;
 	}
-	.has-text-danger {
-		color: #dc3545;
-		font-size: 0.875rem;
-		margin-top: 0.5rem;
-	}
 	.container {
 		padding: 1rem;
 	}
 </style>
 
-
-
-<!-- <button type="submit" formaction="?/register">Register</button> -->
