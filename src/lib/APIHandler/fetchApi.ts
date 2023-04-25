@@ -1,9 +1,13 @@
-import {API_BASE_URL, token} from "./config";
+import {API_BASE_URL} from "./config";
+import Cookies from 'js-cookie';
 
 import type {PTransaction, responseAllTransaction, responseTransaction, responseUser, TransactionData, TagData} from "./types";
 
 
+
 async function postTransaction(data: PTransaction): Promise<responseTransaction> {
+    const token: string = Cookies.get('token');
+
     const response = await fetch(`${API_BASE_URL}transaction/`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json', "Authorization": `Token ${token}`},
@@ -24,6 +28,8 @@ async function postTransaction(data: PTransaction): Promise<responseTransaction>
 
 
 async function getUser(): Promise<responseUser> {
+    const token: string = Cookies.get('token');
+
     const response =  await fetch(`${API_BASE_URL}user/`, {
         method: 'GET',
         headers: { 'Content-Type': 'application/json', "Authorization": `Token ${token}`},
@@ -42,6 +48,8 @@ async function getUser(): Promise<responseUser> {
 
 
 async function getAllTransactions(): Promise<responseAllTransaction> {
+    const token: string = Cookies.get('token');
+
     const response =  await fetch(`${API_BASE_URL}transaction/`, {
         method: 'GET',
         headers: { 'Content-Type': 'application/json', "Authorization": `Token ${token}`},
@@ -60,6 +68,7 @@ async function getAllTransactions(): Promise<responseAllTransaction> {
 }
 
 async function getTransaction(id: number): Promise<responseTransaction> {
+    const token: string = Cookies.get('token');
 
     const response = await fetch(`${API_BASE_URL}transaction/${id}`, {
         method: 'GET',
@@ -78,6 +87,7 @@ async function getTransaction(id: number): Promise<responseTransaction> {
 }
 
 async function deleteTransaction(id: number): Promise<boolean> {
+    const token: string = Cookies.get('token');
     const response = await fetch(`${API_BASE_URL}transaction/${id}`, {
         method: 'DELETE',
         headers: { 'Content-Type': 'application/json', "Authorization": `Token ${token}`},
@@ -94,6 +104,7 @@ async function deleteTransaction(id: number): Promise<boolean> {
 
 
 async function putTransaction(data:TransactionData): Promise<responseTransaction> {
+    const token: string = Cookies.get('token');
 
     const response = await fetch(`${API_BASE_URL}transaction/${data.id}`, {
         method: 'PUT',
@@ -115,6 +126,7 @@ async function putTransaction(data:TransactionData): Promise<responseTransaction
 
 
 async function getAllTags(): Promise<TagData[] | null> {
+    const token: string = Cookies.get('token');
     const response =  await fetch(`${API_BASE_URL}tag/`, {
         method: 'GET',
         headers: { 'Content-Type': 'application/json', "Authorization": `Token ${token}`},

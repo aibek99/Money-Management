@@ -21,8 +21,8 @@
 			const data = await response.json();
 			const token = data.token;
 
-			console.log('Successful login');
-			console.log(token);
+			// console.log('Successful login');
+			// console.log(token);
 			Cookies.set('token', token, {expires: 1, secure: true});
 			window.location.href = '/profile';
 		} else {

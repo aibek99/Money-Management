@@ -20,6 +20,7 @@
 
     let show_transactions: Transaction[] = transactions;
 
+
     const transactionDates = show_transactions.map((transaction) => splitDate(transaction.date));
     const transactionAmounts = show_transactions.map((transaction) => transaction.amount);
 
