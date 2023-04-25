@@ -20,22 +20,22 @@
         <div class="member">
             <img src="https://www.dropbox.com/s/yo8pn0emz5lblch/shohjahon.jpeg?dl=1" alt="Shohjahon's Photo">
             <h2>Shohjahon</h2>
-            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+            <p>Developer backend, implemented fetching APIs and fixed bugs, form control, drow charts</p>
         </div>
         <div class="member">
             <img src="https://www.dropbox.com/s/i87neewtmqns9oq/arlan.jpg?dl=1" alt="Arlan">
             <h2>Arlan</h2>
-            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+            <p>Designed front, page list of transaction items</p>
         </div>
         <div class="member">
             <img src="https://www.dropbox.com/s/oydnzmj6qlxz96n/bekzat.jpg?dl=1" alt="Bekzat">
             <h2>Bekzat</h2>
-            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+            <p>Added dynamic route, form for transactions, imported charts on profile page, pages for specific transaction</p>
         </div>
         <div class="member">
             <img src="https://www.dropbox.com/s/dqn01zk5vyr883a/aibek.jpg?dl=1" alt="Aibek's Photo">
             <h2>Aibek</h2>
-            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+            <p>Sign in/up, about page, fix bugs, profile page, deployment, optimizations</p>
         </div>
     </div>
 </div>
