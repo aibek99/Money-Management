@@ -1,6 +1,6 @@
 import type { Transaction } from "../types";
 
-import type { TransactionData } from "../APIHandler/types";
+import type { TransactionData, TagData } from "../APIHandler/types";
 import _ from "../APIHandler/fetchApi";
 import {toDate} from "./date";
 
