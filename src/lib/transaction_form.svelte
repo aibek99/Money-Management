@@ -43,12 +43,15 @@
 			return { name: tag };
 		});
 
+		const real_date = datetime+"T14:30:00Z";
+		console.log(real_date);
+
 		event.preventDefault();
 		const data = {
 			title: title,
 			amount: amount,
 			tag: tagList,
-			datetime: datetime,
+			datetime: real_date,
 			transaction_type: type,
 			description: description
 			};
@@ -93,7 +96,7 @@
 		<label for="tags">Tags</label>
 		<br>
 		{#each Tags as tag}
-            <button type="button" class="tag" class:active={tags.includes(tag)} on:click={() => tagClick(tag)}>{tag.name}</button>
+            <button type="button" class="tag" class:active={tags.includes(tag.name)} on:click={() => tagClick(tag.name)}>{tag.name}</button>
           {/each}
 		
 		<br>
