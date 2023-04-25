@@ -1,11 +1,7 @@
 <script>
 	import Cookies from 'js-cookie';
-	let dropdownOpen = false;
-	let header;
 
-	function toggleDropdown() {
-		dropdownOpen = !dropdownOpen;
-	}
+	let header;
 
 	function handleSignOut() {
 		console.log(Cookies.get('token'));
@@ -16,16 +12,15 @@
 </script>
 <header class="header-container" bind:this={header}>
 	<div class="header-left">
-		<img src="favicon.png" alt="Logo" class="header-logo" />
+		<img src="favicon.png" alt="Logo" class="header-logo"/>
 		<span class="header-title">Money Management</span>
 	</div>
 	<nav class="header-nav">
 		<a href="/" class="header-link">Home</a>
-		<a href="/profile" class="header-link">Profile</a>
-		<div class="header-dropdown" on:click={toggleDropdown}>
-			<span> <a href="/history" class="header-link"> Transactions </a></span>
-			
-		</div>
+		{#if Cookies.get('token')}
+			<a href="/profile" class="header-link">Profile</a>
+			<a href="/history" class="header-link"> Transactions </a>
+		{/if}
 		<a href="/about" class="header-link">About</a>
 	</nav>
 	<div class="header-right">
@@ -52,8 +47,6 @@
 	.header-left {
 		display: flex;
 		align-items: center;
-		/*font-family: ;*/
-		/*font-size: 20px;*/
 	}
 
 	.header-logo {
@@ -71,6 +64,10 @@
 		align-items: center;
 	}
 
+	button {
+		all: unset;
+	}
+
 	.header-link {
 		margin-left: 24px;
 		color: silver;
@@ -80,35 +77,6 @@
 
 	.header-link:hover {
 		text-decoration: underline;
-	}
-
-	.header-dropdown {
-		position: relative;
-	}
-
-	.header-dropdown-menu {
-		position: absolute;
-		width: 80%;
-		left: 18px;
-		z-index: 1;
-		background-color: #333333;
-		border: 1px solid gray;
-		padding: 5px;
-		margin-top: 5px;
-		border-radius: 10px;
-		gap: 5px;
-	}
-
-	.header-dropdown-link {
-		display: block;
-		color: silver;
-		text-decoration: none;
-		padding: 5px;
-	}
-
-	.header-dropdown-link:hover {
-		background-color: #222222;
-		border-radius: 5px;
 	}
 
 	.header-button {
