@@ -1,6 +1,6 @@
 <script lang="ts">
     import {transactions} from "../transactions/getTransactions";
-    import type {dateType, Transaction} from "../types";
+    import type {dateType} from "../types";
     import BalanceFilterDropdown from "./DateFilterDropdown.svelte";
 
     let date: dateType = {from: null, to: null};
@@ -11,7 +11,7 @@
 
     function changeBalance() {
         balance = 0;
-        for (const transaction: Transaction of transactions) {
+        for (const transaction of transactions) {
             if ((transaction.date >= date.from && transaction.date <= date.to)
                 || (date.to == null && date.from == null) || (transaction.date >= date.from && date.to == null)
                 || (transaction.date <= date.to && date.from == null)) {

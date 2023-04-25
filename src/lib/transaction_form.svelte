@@ -93,7 +93,7 @@
 		<b>Tags</b>
 		<br>
 		{#each Tags as tag}
-            <button type="button" class="tag" class:active={tags.includes(tag)} on:click={() => tagClick(tag)}>{tag}</button>
+            <button type="button" class="tag" class:active={tags.includes(tag)} on:click={() => tagClick(tag)}>{tag.name}</button>
           {/each}
 		
 		<br>
