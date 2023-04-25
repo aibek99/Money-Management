@@ -9,13 +9,6 @@
 		console.log(Cookies.get('token'));
 		window.location.href = '/login';
 	}
-
-	function handleSignOut() {
-		console.log(Cookies.get('token'));
-		Cookies.remove('token', {secure: true});
-		console.log(Cookies.get('token'));
-		window.location.href = '/login';
-	}
 </script>
 <header class="header-container" bind:this={header}>
 	<div class="header-left">
