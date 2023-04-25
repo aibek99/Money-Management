@@ -21,6 +21,7 @@ interface pTag {
 }
 
 export interface PTransaction {
+    id: number;
     title: string;
     amount: number;
     description: string;
