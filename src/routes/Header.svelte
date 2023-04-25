@@ -1,10 +1,17 @@
 <script>
-	let isUser = false;
+	import Cookies from 'js-cookie';
 	let dropdownOpen = false;
 	let header;
 
 	function toggleDropdown() {
 		dropdownOpen = !dropdownOpen;
+	}
+
+	function handleSignOut() {
+		console.log(Cookies.get('token'));
+		Cookies.remove('token', {secure: true});
+		console.log(Cookies.get('token'));
+		window.location.href = '/login';
 	}
 </script>
 <header class="header-container" bind:this={header}>
@@ -27,8 +34,8 @@
 		<a href="/about" class="header-link">About</a>
 	</nav>
 	<div class="header-right">
-		{#if isUser}
-			<button class="header-button" on:click={alert('No function')}>Sign Out</button>
+		{#if Cookies.get('token')}
+			<button class="header-button" on:click={handleSignOut}>Sign Out</button>
 		{:else}
 			<a href="/login" class="header-button">Sign In</a>
 		{/if}

@@ -1,11 +1,40 @@
 <script lang="ts">
-	import type { ActionData } from './$types';
-	export let form: ActionData;
+	import Cookies from 'js-cookie';
 
-    let password:string = "";
-    let passwordConfirmation:string = "";
-    let passwordsMatch: boolean = true;
-    
+	let email = "";
+	let firstName = "";
+	let lastName = "";
+    let password = "";
+    let passwordConfirmation = "";
+    let passwordsMatch = true;
+
+	async function handleRegister() {
+		const response = await fetch('https://shohjahonh.pythonanywhere.com/register/', {
+			method: 'POST',
+			headers: {
+				'Content-Type': 'application/json'
+			},
+			body: JSON.stringify({
+				email: email,
+				first_name: firstName,
+				last_name: lastName,
+				password: password,
+			})
+		});
+
+		if (response.ok) {
+			const data = await response.json();
+			const token = data.token;
+
+			console.log('Successful register');
+			console.log(token);
+			Cookies.set('token', token, {expires: 1, secure: true});
+			window.location.href = '/profile';
+		} else {
+			alert('Invalid credentials');
+		}
+	}
+
     function validatePassword() {
         passwordsMatch = password === passwordConfirmation;
         if (password === passwordConfirmation) {
@@ -19,18 +48,12 @@
 
 <div class="container">
 	<h1>Register</h1>
-	<form method="post">
-		<input type="text" placeholder="Email" name="email" required />
-		<input type="text" placeholder="First name" name="firstname" required />
-		<input type="text" placeholder="Last name" name="lastname" required />
+	<form on:submit|preventDefault={handleRegister} method="post">
+		<input type="text" bind:value={email} placeholder="Email" name="email" required />
+		<input type="text" bind:value={firstName} placeholder="First name" name="firstname" required />
+		<input type="text" bind:value={lastName} placeholder="Last name" name="lastname" required />
 		<input type="password" bind:value={password} placeholder="Password" name="password" required />
-		{#if form?.errorMessage}
-			<div class="has-text-danger">{form.errorMessage}</div>
-		{/if}
         <input type="password" bind:value={passwordConfirmation} placeholder="Password confirmation" name="password" required />
-		{#if form?.errorMessage}
-			<div class="has-text-danger">{form.errorMessage}</div>
-		{/if}
         <button on:click={validatePassword} type="submit" formaction="?/register">Register</button>
 		<a href="/login" class="ifthecase">If you have account, sign in with your account!</a>
         {#if !passwordsMatch}
@@ -85,12 +108,5 @@
 	button:hover {
 		background-color: #0062cc;
 	}
-	.has-text-danger {
-		color: #dc3545;
-		font-size: 0.875rem;
-		margin-top: 0.5rem;
-	}
 </style>
 
-
-<!-- <button type="submit" formaction="?/register">Register</button> -->
