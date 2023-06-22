@@ -1,0 +1,4 @@
+Todo:
+
+1) Check requirements for this project
+2) Determine what should be corrected and what should be added additionally
